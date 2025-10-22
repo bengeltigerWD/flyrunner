@@ -5,79 +5,81 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Smart HTML Studio</title>
 <style>
-* { box-sizing: border-box; }
-body {
-  font-family: 'Poppins', sans-serif;
-  margin: 0; background: var(--bg); color: var(--text);
-  --bg: #f4f4f9; --text: #222; --panel: #fff;
-  --border: #ddd; --accent: #0078ff;
-  transition: 0.3s all ease;
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Poppins',sans-serif;
+  background:var(--bg);color:var(--text);
+  --bg:#f4f4f9;--text:#222;--panel:#fff;--accent:#0078ff;--border:#ccc;
+  transition:.3s;
 }
-body.dark { --bg: #1e1e1e; --text: #ddd; --panel: #2c2c2c; --border: #444; }
-header {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 10px 15px; background: var(--panel);
-  border-bottom: 1px solid var(--border);
+body.dark{--bg:#1e1e1e;--text:#ddd;--panel:#2b2b2b;--border:#444}
+header{
+  display:flex;justify-content:space-between;align-items:center;
+  background:var(--panel);padding:8px 12px;border-bottom:1px solid var(--border);
 }
-header h1 { font-size: 1.2em; margin: 0; }
-header button {
-  margin-left: 6px; border: none; background: var(--accent); color: #fff;
-  padding: 6px 10px; border-radius: 5px; cursor: pointer; transition: 0.2s;
+header h1{font-size:1.1em}
+header button{
+  margin-left:6px;border:none;background:var(--accent);color:#fff;
+  padding:6px 10px;border-radius:5px;cursor:pointer;font-size:14px;
 }
-header button:hover { opacity: 0.85; }
-#container {
-  display: flex; height: calc(100vh - 120px);
+header button:hover{opacity:.85}
+#container{display:flex;flex-direction:row;height:calc(100vh - 130px);}
+#editor,#output{flex:1;margin:6px;border-radius:8px;overflow:hidden;border:1px solid var(--border);}
+#editor{display:flex;flex-direction:column;background:var(--panel);}
+#toolbar{
+  display:flex;flex-wrap:wrap;justify-content:center;gap:6px;
+  background:var(--panel);padding:6px;border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:3;
 }
-#editor, #output {
-  flex: 1; border: 1px solid var(--border); margin: 10px;
-  border-radius: 10px; overflow: hidden;
+#toolbar button{
+  background:var(--accent);color:white;border:none;border-radius:5px;
+  padding:4px 8px;font-size:16px;cursor:pointer;
 }
-#editor textarea {
-  width: 100%; height: 100%; border: none; outline: none;
-  background: var(--panel); color: var(--text);
-  font-family: monospace; font-size: 14px; padding: 10px;
-  resize: none;
+#toolbar button:active{opacity:.7}
+#code{
+  flex:1;width:100%;border:none;outline:none;
+  background:transparent;color:var(--text);
+  font-family:monospace;font-size:14px;padding:10px;resize:none;
 }
-iframe { width: 100%; height: 100%; border: none; background: #fff; }
-footer {
-  text-align: center; padding: 10px; font-size: 0.9em;
-  background: var(--panel); border-top: 1px solid var(--border);
+iframe{width:100%;height:100%;border:none;background:#fff;}
+footer{
+  text-align:center;padding:8px;font-size:.9em;background:var(--panel);
+  border-top:1px solid var(--border);
 }
-footer a { color: var(--accent); text-decoration: none; }
-footer a:hover { text-decoration: underline; }
-
-#modal, #register {
-  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center;
+footer a{color:var(--accent);text-decoration:none;}
+footer a:hover{text-decoration:underline;}
+/* modal + register */
+#register,#modal{
+  position:fixed;inset:0;display:none;align-items:center;justify-content:center;
+  background:rgba(0,0,0,.6);z-index:999;
 }
-.modal-content, .register-box {
-  background: var(--panel); padding: 20px; border-radius: 10px; width: 300px;
+.register-box,.modal-content{
+  background:var(--panel);padding:20px;border-radius:10px;width:300px;max-width:90%;
 }
-.modal-content ul { list-style: none; padding: 0; }
-.modal-content li {
-  margin: 5px 0; display: flex; justify-content: space-between;
+.register-box input{
+  width:100%;margin:5px 0;padding:8px;border:1px solid var(--border);border-radius:5px;
 }
-.modal-content li button { background: red; color: white; border: none; border-radius: 4px; cursor: pointer; }
-
-.register-box input {
-  width: 100%; margin: 5px 0; padding: 8px; border-radius: 5px;
-  border: 1px solid var(--border); font-family: inherit;
+.register-box button{
+  width:100%;padding:8px;margin-top:8px;background:var(--accent);
+  color:white;border:none;border-radius:5px;cursor:pointer;
 }
-.register-box button {
-  width: 100%; padding: 8px; border: none; background: var(--accent);
-  color: white; border-radius: 5px; margin-top: 10px; cursor: pointer;
+.modal-content ul{list-style:none;padding:0;max-height:200px;overflow:auto;}
+.modal-content li{margin:4px 0;display:flex;justify-content:space-between;align-items:center;}
+.modal-content li button{background:red;color:#fff;border:none;border-radius:4px;padding:2px 6px;cursor:pointer;}
+@media(max-width:768px){
+  #container{flex-direction:column;}
+  #editor,#output{height:50%;margin:4px;}
 }
 </style>
 </head>
 <body>
 
-<!-- Registration Form -->
 <div id="register">
   <div class="register-box">
     <h3>Sign Up</h3>
-    <input type="text" id="name" placeholder="Full Name" required>
-    <input type="email" id="email" placeholder="Email" required>
-    <input type="tel" id="mobile" placeholder="Mobile Number" required>
+    <input id="name" placeholder="Full Name">
+    <input id="email" type="email" placeholder="Email">
+    <input id="mobile" placeholder="Mobile Number">
     <button id="signupBtn">Sign Up</button>
   </div>
 </div>
@@ -95,18 +97,28 @@ footer a:hover { text-decoration: underline; }
 
 <div id="container">
   <div id="editor">
-    <textarea id="code" placeholder="Write your HTML, CSS & JS here..."></textarea>
+    <div id="toolbar">
+      <button data-insert="<">&lt;</button>
+      <button data-insert=">">&gt;</button>
+      <button data-insert="/">&sol;</button>
+      <button data-insert="=">=</button>
+      <button data-insert='"'>&quot;</button>
+      <button data-insert="'">'</button>
+      <button data-insert="{">{</button>
+      <button data-insert="}">}</button>
+      <button data-insert="(">(</button>
+      <button data-insert=")">)</button>
+      <button data-insert=";">;</button>
+    </div>
+    <textarea id="code" placeholder="Write your HTML, CSS, JS here..."></textarea>
   </div>
-  <div id="output">
-    <iframe id="preview"></iframe>
-  </div>
+  <div id="output"><iframe id="preview"></iframe></div>
 </div>
 
 <footer>
   Developed by Ajmir Ahmed — <a href="https://example.com" target="_blank">Visit Website</a>
 </footer>
 
-<!-- Project Modal -->
 <div id="modal">
   <div class="modal-content">
     <h3>Saved Projects</h3>
@@ -116,116 +128,81 @@ footer a:hover { text-decoration: underline; }
 </div>
 
 <script>
-// ========== Registration ==========
-const register = document.getElementById('register');
-if (!localStorage.getItem('registered')) {
-  register.style.display = 'flex';
-}
-document.getElementById('signupBtn').onclick = () => {
-  const name = nameInput.value.trim();
-  const email = emailInput.value.trim();
-  const mobile = mobileInput.value.trim();
-  if (!name || !email || !mobile) return alert('Fill all fields');
-  // Send via Formspree
-  fetch('https://formspree.io/f/xleqzeen', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name, email, mobile })
-  }).then(() => {
-    localStorage.setItem('registered', 'true');
-    register.style.display = 'none';
-    alert('Registered successfully!');
-  }).catch(() => {
-    localStorage.setItem('registered', 'true');
-    register.style.display = 'none';
-  });
+// Registration
+const regBox=document.getElementById('register');
+if(!localStorage.getItem('registered'))regBox.style.display='flex';
+document.getElementById('signupBtn').onclick=()=>{
+ let n=name.value.trim(),e=email.value.trim(),m=mobile.value.trim();
+ if(!n||!e||!m)return alert('All fields required');
+ fetch('https://formspree.io/f/xleqzeen',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:n,email:e,mobile:m})})
+ .finally(()=>{localStorage.setItem('registered','true');regBox.style.display='none';alert('Registered successfully!');});
 };
-const nameInput = document.getElementById('name');
-const emailInput = document.getElementById('email');
-const mobileInput = document.getElementById('mobile');
 
-// ========== Editor Logic ==========
-const textarea = document.getElementById('code');
-const iframe = document.getElementById('preview');
+// Elements
+const txt=document.getElementById('code'),frame=document.getElementById('preview');
+let current=null;
 
-function runCode() {
-  iframe.srcdoc = textarea.value;
-}
-document.getElementById('runBtn').onclick = runCode;
+// Run Code
+const run=()=>frame.srcdoc=txt.value;
+document.getElementById('runBtn').onclick=run;
 
 // Auto close tag
-textarea.addEventListener('input', e => {
-  const val = textarea.value;
-  const last = val.slice(-1);
-  if (last === '>') {
-    const openTag = val.match(/<(\w+)>$/);
-    if (openTag) {
-      textarea.value += `</${openTag[1]}>`;
-    }
-  }
+txt.addEventListener('input',e=>{
+ if(e.data==='>'){
+   const m=txt.value.match(/<(\w+)>$/);
+   if(m){txt.value+=`</${m[1]}>`;}
+ }
 });
 
-// ========== Project Handling ==========
-let currentProject = null;
+// Toolbar insert
+document.querySelectorAll('#toolbar button').forEach(btn=>{
+ btn.onclick=()=>{
+   const val=btn.getAttribute('data-insert');
+   const start=txt.selectionStart,end=txt.selectionEnd;
+   txt.value=txt.value.substring(0,start)+val+txt.value.substring(end);
+   txt.selectionStart=txt.selectionEnd=start+val.length;
+   txt.focus();
+ };
+});
 
-function saveProject() {
-  const name = currentProject || prompt('Enter project name:');
-  if (!name) return;
-  localStorage.setItem('project_' + name, textarea.value);
-  currentProject = name;
-  alert('Project saved!');
+// Projects
+function save(){
+ const name=current||prompt('Project name:');
+ if(!name)return;
+ localStorage.setItem('proj_'+name,txt.value);current=name;alert('Saved!');
 }
-
-function newProject() {
-  if (confirm('Create new project? Unsaved work will be lost.')) {
-    textarea.value = '';
-    currentProject = null;
+function load(name){
+ txt.value=localStorage.getItem('proj_'+name)||'';current=name;closeModal();
+}
+function del(name){
+ if(confirm('Delete project?')){localStorage.removeItem('proj_'+name);openModal();}
+}
+function newP(){if(confirm('Clear current code?')){txt.value='';current=null;}}
+function openModal(){
+ const list=document.getElementById('projectList');list.innerHTML='';
+ Object.keys(localStorage).forEach(k=>{
+  if(k.startsWith('proj_')){
+   const n=k.replace('proj_','');
+   const li=document.createElement('li');
+   li.innerHTML=`<span>${n}</span>
+    <div><button onclick="load('${n}')">Open</button>
+    <button onclick="del('${n}')">❌</button></div>`;
+   list.appendChild(li);
   }
+ });
+ document.getElementById('modal').style.display='flex';
 }
+function closeModal(){document.getElementById('modal').style.display='none';}
+document.getElementById('saveBtn').onclick=save;
+document.getElementById('openBtn').onclick=openModal;
+document.getElementById('newBtn').onclick=newP;
 
-function openProject() {
-  const modal = document.getElementById('modal');
-  const list = document.getElementById('projectList');
-  list.innerHTML = '';
-  Object.keys(localStorage).forEach(k => {
-    if (k.startsWith('project_')) {
-      const name = k.replace('project_', '');
-      const li = document.createElement('li');
-      li.innerHTML = `<span>${name}</span>
-        <div>
-          <button onclick="loadProject('${name}')">Open</button>
-          <button onclick="deleteProject('${name}')">❌</button>
-        </div>`;
-      list.appendChild(li);
-    }
-  });
-  modal.style.display = 'flex';
-}
-function closeModal() { document.getElementById('modal').style.display = 'none'; }
-
-function loadProject(name) {
-  textarea.value = localStorage.getItem('project_' + name);
-  currentProject = name;
-  closeModal();
-}
-
-function deleteProject(name) {
-  if (confirm('Delete this project?')) {
-    localStorage.removeItem('project_' + name);
-    openProject();
-  }
-}
-
-document.getElementById('saveBtn').onclick = saveProject;
-document.getElementById('openBtn').onclick = openProject;
-document.getElementById('newBtn').onclick = newProject;
-
-// ========== Theme ==========
-document.getElementById('themeBtn').onclick = () => {
-  document.body.classList.toggle('dark');
-  localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+// Theme
+document.getElementById('themeBtn').onclick=()=>{
+ document.body.classList.toggle('dark');
+ localStorage.setItem('theme',document.body.classList.contains('dark')?'dark':'light');
 };
-if (localStorage.getItem('theme') === 'dark') document.body.classList.add('dark');
+if(localStorage.getItem('theme')==='dark')document.body.classList.add('dark');
 </script>
 </body>
 </html>
