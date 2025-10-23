@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Pesific HTML Runner</title>
     <style>
         :root {
@@ -32,7 +32,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -43,99 +43,105 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            touch-action: manipulation;
         }
 
         /* Header Styles */
         header {
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
-            padding: 12px 15px;
+            padding: 10px 15px;
             box-shadow: var(--shadow);
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 100;
-            min-height: 60px;
+            min-height: 50px;
+            flex-shrink: 0;
         }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .logo-icon {
-            font-size: 1.8rem;
-            width: 40px;
-            height: 40px;
+            font-size: 1.5rem;
+            width: 32px;
+            height: 32px;
             display: flex;
             align-items: center;
             justify-content: center;
             background: rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
+            border-radius: 6px;
         }
 
         .logo h1 {
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             font-weight: 600;
+            white-space: nowrap;
         }
 
         .toolbar {
             display: flex;
-            gap: 8px;
+            gap: 5px;
         }
 
         .btn {
             background: rgba(255, 255, 255, 0.2);
             border: none;
             color: white;
-            padding: 8px 12px;
+            padding: 6px 8px;
             border-radius: 6px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
             transition: var(--transition);
-            font-size: 14px;
+            font-size: 12px;
             white-space: nowrap;
         }
 
-        .btn:hover {
+        .btn:active {
+            transform: scale(0.95);
             background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
         }
 
         /* Symbol Bar */
         .symbol-bar {
             background-color: var(--light);
-            padding: 8px 10px;
+            padding: 6px 8px;
             display: flex;
-            gap: 6px;
+            gap: 4px;
             overflow-x: auto;
             border-bottom: 1px solid var(--border);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
             -webkit-overflow-scrolling: touch;
+            flex-shrink: 0;
+            min-height: 40px;
         }
 
         .symbol-btn {
             background: var(--light);
             border: 1px solid var(--border);
             color: var(--dark);
-            padding: 6px 8px;
+            padding: 5px 8px;
             border-radius: 4px;
             cursor: pointer;
             transition: var(--transition);
             font-family: monospace;
             font-size: 14px;
-            min-width: 32px;
+            min-width: 30px;
             text-align: center;
             flex-shrink: 0;
         }
 
-        .symbol-btn:hover {
+        .symbol-btn:active {
             background-color: var(--primary);
             color: white;
-            transform: translateY(-2px);
+            transform: scale(0.95);
         }
 
         /* Main Content */
@@ -146,24 +152,12 @@
             flex-direction: column;
         }
 
-        @media (min-width: 768px) {
-            .container {
-                flex-direction: row;
-            }
-        }
-
         .editor-panel {
             flex: 1;
             display: flex;
             flex-direction: column;
-            border-right: 1px solid var(--border);
-            min-height: 50vh;
-        }
-
-        @media (min-width: 768px) {
-            .editor-panel {
-                min-height: auto;
-            }
+            border-bottom: 1px solid var(--border);
+            min-height: 40vh;
         }
 
         .editor-tabs {
@@ -172,15 +166,17 @@
             border-bottom: 1px solid var(--border);
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
+            flex-shrink: 0;
         }
 
         .tab {
-            padding: 10px 15px;
+            padding: 8px 12px;
             cursor: pointer;
             border-bottom: 2px solid transparent;
             transition: var(--transition);
             white-space: nowrap;
             flex-shrink: 0;
+            font-size: 14px;
         }
 
         .tab.active {
@@ -194,29 +190,31 @@
             display: flex;
             flex-direction: column;
             position: relative;
+            min-height: 200px;
         }
 
         .editor-header {
-            padding: 10px 15px;
+            padding: 8px 12px;
             background-color: var(--light);
             border-bottom: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-shrink: 0;
         }
 
         .editor-header h2 {
-            font-size: 1rem;
+            font-size: 14px;
             font-weight: 500;
         }
 
         .editor {
             flex: 1;
-            padding: 15px;
+            padding: 12px;
             background-color: var(--light);
             font-family: 'Courier New', monospace;
             font-size: 14px;
-            line-height: 1.5;
+            line-height: 1.4;
             border: none;
             resize: none;
             outline: none;
@@ -225,6 +223,7 @@
             white-space: pre;
             overflow: auto;
             -webkit-overflow-scrolling: touch;
+            min-height: 150px;
         }
 
         .preview-panel {
@@ -234,23 +233,18 @@
             min-height: 40vh;
         }
 
-        @media (min-width: 768px) {
-            .preview-panel {
-                min-height: auto;
-            }
-        }
-
         .preview-header {
-            padding: 10px 15px;
+            padding: 8px 12px;
             background-color: var(--light);
             border-bottom: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-shrink: 0;
         }
 
         .preview-header h2 {
-            font-size: 1rem;
+            font-size: 14px;
             font-weight: 500;
         }
 
@@ -258,15 +252,16 @@
             flex: 1;
             border: none;
             background-color: white;
+            min-height: 200px;
         }
 
         /* Mobile Run Button */
         .mobile-run-btn {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 60px;
-            height: 60px;
+            bottom: 70px;
+            right: 15px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
@@ -276,39 +271,30 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             z-index: 1000;
             transition: var(--transition);
         }
 
-        .mobile-run-btn:hover {
-            transform: scale(1.1);
-        }
-
-        @media (min-width: 768px) {
-            .mobile-run-btn {
-                display: none;
-            }
+        .mobile-run-btn:active {
+            transform: scale(0.9);
         }
 
         /* Footer */
         footer {
             background-color: var(--light);
-            padding: 12px 15px;
+            padding: 10px 15px;
             text-align: center;
             border-top: 1px solid var(--border);
-            font-size: 0.8rem;
+            font-size: 12px;
             color: var(--gray);
+            flex-shrink: 0;
         }
 
         footer a {
             color: var(--primary);
             text-decoration: none;
             font-weight: 500;
-        }
-
-        footer a:hover {
-            text-decoration: underline;
         }
 
         /* Modal Styles */
@@ -318,22 +304,21 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(0, 0, 0, 0.7);
             display: none;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
-            backdrop-filter: blur(5px);
+            z-index: 2000;
             padding: 15px;
         }
 
         .modal-content {
             background-color: var(--light);
-            border-radius: 10px;
+            border-radius: 12px;
             box-shadow: var(--shadow);
             width: 100%;
-            max-width: 500px;
-            max-height: 90vh;
+            max-width: 400px;
+            max-height: 80vh;
             overflow-y: auto;
             animation: modalAppear 0.3s ease-out;
         }
@@ -350,7 +335,7 @@
         }
 
         .modal-header {
-            padding: 20px;
+            padding: 15px 20px;
             border-bottom: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
@@ -358,7 +343,7 @@
         }
 
         .modal-header h2 {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: 600;
         }
 
@@ -368,6 +353,12 @@
             font-size: 1.5rem;
             cursor: pointer;
             color: var(--gray);
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .modal-body {
@@ -382,17 +373,19 @@
             display: block;
             margin-bottom: 5px;
             font-weight: 500;
+            font-size: 14px;
         }
 
         .form-control {
             width: 100%;
             padding: 12px;
             border: 1px solid var(--border);
-            border-radius: 6px;
+            border-radius: 8px;
             background-color: var(--light);
             color: var(--dark);
-            font-size: 1rem;
+            font-size: 16px;
             transition: var(--transition);
+            -webkit-appearance: none;
         }
 
         .form-control:focus {
@@ -414,16 +407,17 @@
             color: white;
             border: none;
             padding: 12px 20px;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: 500;
             transition: var(--transition);
-            font-size: 1rem;
+            font-size: 16px;
+            min-width: 100px;
         }
 
-        .btn-primary:hover {
+        .btn-primary:active {
             background-color: var(--primary-dark);
-            transform: translateY(-2px);
+            transform: scale(0.98);
         }
 
         .btn-secondary {
@@ -431,24 +425,27 @@
             color: var(--dark);
             border: none;
             padding: 12px 20px;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: 500;
             transition: var(--transition);
-            font-size: 1rem;
+            font-size: 16px;
+            min-width: 80px;
         }
 
-        .btn-secondary:hover {
+        .btn-secondary:active {
             background-color: var(--gray);
             color: white;
+            transform: scale(0.98);
         }
 
         /* Project List */
         .project-list {
-            max-height: 300px;
+            max-height: 200px;
             overflow-y: auto;
             border: 1px solid var(--border);
-            border-radius: 6px;
+            border-radius: 8px;
+            -webkit-overflow-scrolling: touch;
         }
 
         .project-item {
@@ -461,7 +458,7 @@
             transition: var(--transition);
         }
 
-        .project-item:hover {
+        .project-item:active {
             background-color: rgba(0, 0, 0, 0.05);
         }
 
@@ -480,14 +477,15 @@
             cursor: pointer;
             color: var(--gray);
             transition: var(--transition);
-            padding: 4px;
+            padding: 6px;
             border-radius: 4px;
-            font-size: 1.1rem;
+            font-size: 16px;
         }
 
-        .action-btn:hover {
+        .action-btn:active {
             color: var(--primary);
             background-color: rgba(67, 97, 238, 0.1);
+            transform: scale(0.9);
         }
 
         /* Offline Notice */
@@ -498,10 +496,10 @@
             transform: translate(-50%, -50%);
             background-color: var(--light);
             border: 2px solid var(--primary);
-            border-radius: 10px;
+            border-radius: 12px;
             padding: 20px;
             box-shadow: var(--shadow);
-            z-index: 2000;
+            z-index: 3000;
             text-align: center;
             max-width: 90%;
             display: none;
@@ -509,86 +507,61 @@
 
         .offline-notice p {
             margin-bottom: 15px;
-            font-size: 1.1rem;
+            font-size: 16px;
             line-height: 1.5;
         }
 
-        /* Custom Logo Modal */
-        .custom-logo-modal {
+        /* Notification */
+        .notification {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .custom-logo-content {
-            background-color: var(--light);
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: var(--shadow);
-            width: 90%;
-            max-width: 400px;
-            text-align: center;
-        }
-
-        .logo-preview {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 20px;
+            top: 20px;
+            right: 20px;
             background: var(--primary);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
             color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            z-index: 4000;
+            transition: var(--transition);
+            max-width: 300px;
+            font-size: 14px;
         }
 
-        /* Mobile responsive adjustments */
-        @media (max-width: 767px) {
-            header {
-                padding: 10px;
-            }
-            
-            .logo h1 {
-                font-size: 1.1rem;
-            }
-            
+        /* Mobile specific improvements */
+        @media (max-width: 768px) {
             .btn span:not(.btn-icon) {
                 display: none;
             }
             
             .btn {
                 padding: 8px;
+                min-width: 40px;
+                justify-content: center;
             }
             
-            .editor-header, .preview-header {
-                padding: 8px 10px;
+            .logo h1 {
+                font-size: 1rem;
             }
             
             .editor {
+                font-size: 16px;
                 padding: 10px;
-                font-size: 14px;
             }
             
-            .modal-content {
-                margin: 10px;
+            .symbol-bar {
+                padding: 5px;
             }
             
-            .modal-header, .modal-body, .modal-footer {
-                padding: 15px;
+            .symbol-btn {
+                min-width: 28px;
+                padding: 4px 6px;
+                font-size: 13px;
             }
         }
 
-        /* Button icons for mobile */
+        /* Button icons */
         .btn-icon {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
         }
     </style>
 </head>
@@ -600,19 +573,19 @@
                 <h2>Welcome to Pesific HTML Runner</h2>
             </div>
             <div class="modal-body">
-                <p>Registration is required to use Pesific HTML Runner</p>
+                <p style="margin-bottom: 15px; color: var(--gray);">Registration is required to use this app</p>
                 <form id="registrationForm" action="https://formspree.io/f/myznnpba" method="POST">
                     <div class="form-group">
                         <label for="fullName">Full Name *</label>
-                        <input type="text" id="fullName" name="name" class="form-control" required>
+                        <input type="text" id="fullName" name="name" class="form-control" required placeholder="Enter your full name">
                     </div>
                     <div class="form-group">
                         <label for="email">Email Address *</label>
-                        <input type="email" id="email" name="email" class="form-control" required>
+                        <input type="email" id="email" name="email" class="form-control" required placeholder="Enter your email">
                     </div>
                     <div class="form-group">
                         <label for="mobile">Mobile Number *</label>
-                        <input type="tel" id="mobile" name="mobile" class="form-control" required>
+                        <input type="tel" id="mobile" name="mobile" class="form-control" required placeholder="Enter your mobile number">
                     </div>
                     <input type="hidden" name="_subject" value="New Registration - Pesific HTML Runner">
                     <input type="hidden" name="_format" value="plain">
@@ -629,7 +602,7 @@
         <!-- Header -->
         <header>
             <div class="logo">
-                <div class="logo-icon" id="customLogo">⚡</div>
+                <div class="logo-icon">⚡</div>
                 <h1>Pesific HTML Runner</h1>
             </div>
             <div class="toolbar">
@@ -653,10 +626,6 @@
                     <span class="btn-icon">🌗</span>
                     <span>Theme</span>
                 </button>
-                <button class="btn" id="logoBtn">
-                    <span class="btn-icon">🖼️</span>
-                    <span>Logo</span>
-                </button>
             </div>
         </header>
 
@@ -678,7 +647,7 @@
                     <div class="editor-header">
                         <h2 id="editorTitle">HTML Editor</h2>
                         <div>
-                            <button class="btn-secondary" id="clearBtn">Clear</button>
+                            <button class="btn-secondary" id="clearBtn" style="padding: 6px 12px; font-size: 12px;">Clear</button>
                         </div>
                     </div>
                     <textarea class="editor" id="htmlEditor" placeholder="Write your HTML code here..."></textarea>
@@ -692,10 +661,10 @@
                 <div class="preview-header">
                     <h2>Live Preview</h2>
                     <div>
-                        <button class="btn-secondary" id="refreshBtn">Refresh</button>
+                        <button class="btn-secondary" id="refreshBtn" style="padding: 6px 12px; font-size: 12px;">Refresh</button>
                     </div>
                 </div>
-                <iframe class="preview" id="previewFrame"></iframe>
+                <iframe class="preview" id="previewFrame" sandbox="allow-scripts allow-same-origin"></iframe>
             </div>
         </div>
 
@@ -734,26 +703,6 @@
             <p>আপনি বর্তমানে অফলাইনে আছেন, দয়া করে ওয়েবসাইটটি রিলোড করবেন না।</p>
             <button class="btn-primary" id="okOfflineBtn">OK</button>
         </div>
-
-        <!-- Custom Logo Modal -->
-        <div class="custom-logo-modal" id="customLogoModal">
-            <div class="custom-logo-content">
-                <h2>Custom Logo</h2>
-                <div class="logo-preview" id="logoPreview">⚡</div>
-                <div class="form-group">
-                    <label for="logoText">Logo Text/Emoji</label>
-                    <input type="text" id="logoText" class="form-control" value="⚡" maxlength="2">
-                </div>
-                <div class="form-group">
-                    <label for="logoColor">Logo Color</label>
-                    <input type="color" id="logoColor" class="form-control" value="#4361ee">
-                </div>
-                <div class="modal-footer">
-                    <button class="btn-secondary" id="cancelLogo">Cancel</button>
-                    <button class="btn-primary" id="saveLogo">Save Logo</button>
-                </div>
-            </div>
-        </div>
     </div>
 
     <script>
@@ -764,11 +713,7 @@
             theme: 'light',
             autoSave: true,
             registered: false,
-            currentTab: 'html',
-            customLogo: {
-                text: '⚡',
-                color: '#4361ee'
-            }
+            currentTab: 'html'
         };
 
         // DOM Elements
@@ -785,11 +730,6 @@
         const offlineNotice = document.getElementById('offlineNotice');
         const editorTitle = document.getElementById('editorTitle');
         const tabs = document.querySelectorAll('.tab');
-        const customLogoModal = document.getElementById('customLogoModal');
-        const logoPreview = document.getElementById('logoPreview');
-        const logoText = document.getElementById('logoText');
-        const logoColor = document.getElementById('logoColor');
-        const customLogo = document.getElementById('customLogo');
 
         // Buttons
         const signUpBtn = document.getElementById('signUpBtn');
@@ -806,9 +746,6 @@
         const websiteLink = document.getElementById('websiteLink');
         const okOfflineBtn = document.getElementById('okOfflineBtn');
         const mobileRunBtn = document.getElementById('mobileRunBtn');
-        const logoBtn = document.getElementById('logoBtn');
-        const cancelLogo = document.getElementById('cancelLogo');
-        const saveLogo = document.getElementById('saveLogo');
 
         // Initialize the app
         function init() {
@@ -831,8 +768,7 @@
             setupEventListeners();
             setupOfflineDetection();
             applyTheme();
-            applyCustomLogo();
-            runCode(); // Run initial empty code to set up iframe
+            runCode();
             
             // Auto-save every 5 seconds
             setInterval(() => {
@@ -876,6 +812,7 @@
         function setupSymbolBar() {
             const symbols = ['<', '>', '/', '"', "'", '{', '}', '(', ')', '[', ']', ';', ':', '=', '&', '#', '$', '%', '@', '!', '?', '+', '-', '*', '|', '\\'];
             
+            symbolBar.innerHTML = '';
             symbols.forEach(symbol => {
                 const button = document.createElement('button');
                 button.className = 'symbol-btn';
@@ -895,6 +832,19 @@
             editor.value = text.substring(0, start) + symbol + text.substring(end);
             editor.selectionStart = editor.selectionEnd = start + symbol.length;
             editor.focus();
+            
+            // Auto-close tags for HTML editor
+            if (symbol === '<' && state.currentTab === 'html') {
+                setTimeout(() => {
+                    const cursorPos = editor.selectionStart;
+                    const beforeCursor = editor.value.substring(0, cursorPos);
+                    const tagMatch = beforeCursor.match(/<([a-zA-Z][a-zA-Z0-9]*)$/);
+                    if (tagMatch) {
+                        const tagName = tagMatch[1];
+                        autoCloseTag(editor, tagName);
+                    }
+                }, 10);
+            }
         }
 
         // Get the currently active editor
@@ -920,8 +870,14 @@
             const indent = indentMatch ? indentMatch[1] : '';
             
             // Insert closing tag on the next line with proper indentation
-            editor.value = beforeCursor + `\n${indent}</${tagName}>` + afterCursor;
+            const newText = beforeCursor + `\n${indent}</${tagName}>` + afterCursor;
+            editor.value = newText;
+            
+            // Set cursor position after the opening tag
             editor.selectionStart = editor.selectionEnd = cursorPos;
+            editor.focus();
+            
+            showNotification(`Auto-closed ${tagName} tag`);
         }
 
         // Setup event listeners
@@ -931,8 +887,8 @@
             
             // Editor events
             htmlEditor.addEventListener('input', handleEditorInput);
-            cssEditor.addEventListener('input', handleEditorInput);
-            jsEditor.addEventListener('input', handleEditorInput);
+            cssEditor.addEventListener('input', () => {});
+            jsEditor.addEventListener('input', () => {});
             
             htmlEditor.addEventListener('keydown', handleKeydown);
             cssEditor.addEventListener('keydown', handleKeydown);
@@ -955,36 +911,24 @@
             clearBtn.addEventListener('click', clearEditor);
             refreshBtn.addEventListener('click', runCode);
             mobileRunBtn.addEventListener('click', runCode);
-            logoBtn.addEventListener('click', showCustomLogoModal);
             
             // Modal events
             closeProjects.addEventListener('click', () => projectsModal.style.display = 'none');
             cancelProjects.addEventListener('click', () => projectsModal.style.display = 'none');
             saveProjectBtn.addEventListener('click', saveProject);
             okOfflineBtn.addEventListener('click', () => offlineNotice.style.display = 'none');
-            cancelLogo.addEventListener('click', () => customLogoModal.style.display = 'none');
-            saveLogo.addEventListener('click', saveCustomLogo);
-            
-            // Logo customization events
-            logoText.addEventListener('input', updateLogoPreview);
-            logoColor.addEventListener('input', updateLogoPreview);
             
             // Website link
             websiteLink.addEventListener('click', (e) => {
                 e.preventDefault();
-                alert('Website: https://example.com');
+                showNotification('Website: https://ajmirahmed.com');
             });
             
             // Keyboard shortcuts
             document.addEventListener('keydown', (e) => {
-                if (e.ctrlKey || e.metaKey) {
-                    if (e.key === 's') {
-                        e.preventDefault();
-                        saveCurrentProject();
-                    } else if (e.key === 'r') {
-                        e.preventDefault();
-                        runCode();
-                    }
+                if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                    e.preventDefault();
+                    saveCurrentProject();
                 }
             });
         }
@@ -1013,7 +957,7 @@
                                 // Auto-close the tag on next line
                                 setTimeout(() => {
                                     autoCloseTag(editor, tagName);
-                                }, 10);
+                                }, 50);
                             }
                         }
                     }
@@ -1080,38 +1024,45 @@
             const html = htmlEditor.value;
             const css = cssEditor.value;
             const js = jsEditor.value;
-            const iframeDoc = previewFrame.contentDocument || previewFrame.contentWindow.document;
             
-            iframeDoc.open();
-            iframeDoc.write(`
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <style>
-                        body { 
-                            font-family: Arial, sans-serif; 
-                            padding: 20px;
-                            margin: 0;
-                            line-height: 1.6;
-                        }
-                        ${css}
-                    </style>
-                </head>
-                <body>
-                    ${html || '<p class="placeholder">Write some HTML to see the preview here.</p>'}
-                    <script>
-                        try {
-                            ${js}
-                        } catch (error) {
-                            console.error('JavaScript Error:', error);
-                        }
-                    <\/script>
-                </body>
-                </html>
-            `);
-            iframeDoc.close();
+            try {
+                const iframeDoc = previewFrame.contentDocument || previewFrame.contentWindow.document;
+                
+                iframeDoc.open();
+                iframeDoc.write(`
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <style>
+                            body { 
+                                font-family: Arial, sans-serif; 
+                                padding: 15px;
+                                margin: 0;
+                                line-height: 1.5;
+                            }
+                            ${css}
+                        </style>
+                    </head>
+                    <body>
+                        ${html || '<p style="color: #666; text-align: center; padding: 20px;">Write HTML code to see preview</p>'}
+                        <script>
+                            try {
+                                ${js}
+                            } catch (error) {
+                                console.error('JavaScript Error:', error);
+                            }
+                        <\/script>
+                    </body>
+                    </html>
+                `);
+                iframeDoc.close();
+                
+                showNotification('Code executed successfully!');
+            } catch (error) {
+                showNotification('Error running code: ' + error.message);
+            }
         }
 
         // Toggle between light and dark theme
@@ -1119,6 +1070,7 @@
             state.theme = state.theme === 'light' ? 'dark' : 'light';
             applyTheme();
             saveState();
+            showNotification(state.theme === 'dark' ? 'Dark mode enabled' : 'Light mode enabled');
         }
 
         // Apply current theme
@@ -1133,8 +1085,9 @@
         // Clear active editor
         function clearEditor() {
             const editor = getActiveEditor();
-            if (confirm('Are you sure you want to clear the editor? Any unsaved changes will be lost.')) {
+            if (confirm('Are you sure you want to clear the editor?')) {
                 editor.value = '';
+                showNotification('Editor cleared');
             }
         }
 
@@ -1167,9 +1120,9 @@
                     registrationModal.style.display = 'none';
                     mainApp.style.display = 'block';
                     initializeApp();
-                    alert('Registration successful! Welcome to Pesific HTML Runner.');
+                    showNotification('Welcome to Pesific HTML Runner!');
                 } else {
-                    alert('There was an error with your registration. Please try again.');
+                    alert('Registration failed. Please check your connection and try again.');
                 }
             })
             .catch(error => {
@@ -1180,19 +1133,18 @@
                 registrationModal.style.display = 'none';
                 mainApp.style.display = 'block';
                 initializeApp();
-                alert('Registration submitted! Welcome to Pesific HTML Runner.');
+                showNotification('Welcome! Registration submitted.');
             });
         }
 
         // Setup offline detection
         function setupOfflineDetection() {
             window.addEventListener('online', () => {
-                // Hide offline notice if visible
                 offlineNotice.style.display = 'none';
+                showNotification('Back online!');
             });
             
             window.addEventListener('offline', () => {
-                // Show offline notice in Bengali
                 offlineNotice.style.display = 'block';
             });
             
@@ -1254,6 +1206,7 @@
                     saveState();
                     projectsModal.style.display = 'none';
                     runCode();
+                    showNotification(`Project "${project.name}" loaded`);
                     break;
                 case 'rename':
                     const newName = prompt('Enter new project name:', project.name);
@@ -1261,10 +1214,11 @@
                         project.name = newName.trim();
                         saveProjects();
                         loadProjectsList();
+                        showNotification('Project renamed');
                     }
                     break;
                 case 'delete':
-                    if (confirm(`Are you sure you want to delete "${project.name}"?`)) {
+                    if (confirm(`Delete "${project.name}"?`)) {
                         state.projects = state.projects.filter(p => p.id !== id);
                         if (state.currentProject === id) {
                             state.currentProject = null;
@@ -1272,6 +1226,7 @@
                         saveProjects();
                         saveState();
                         loadProjectsList();
+                        showNotification('Project deleted');
                     }
                     break;
             }
@@ -1287,7 +1242,7 @@
                     project.css = cssEditor.value;
                     project.js = jsEditor.value;
                     saveProjects();
-                    showNotification('Project saved successfully!');
+                    showNotification('Project saved!');
                 }
             } else {
                 // Create new project
@@ -1327,52 +1282,17 @@
             localStorage.setItem('pesificHtmlRunnerProjects', JSON.stringify(state.projects));
         }
 
-        // Show custom logo modal
-        function showCustomLogoModal() {
-            logoText.value = state.customLogo.text;
-            logoColor.value = state.customLogo.color;
-            updateLogoPreview();
-            customLogoModal.style.display = 'flex';
-        }
-
-        // Update logo preview
-        function updateLogoPreview() {
-            logoPreview.textContent = logoText.value;
-            logoPreview.style.backgroundColor = logoColor.value;
-        }
-
-        // Save custom logo
-        function saveCustomLogo() {
-            state.customLogo.text = logoText.value;
-            state.customLogo.color = logoColor.value;
-            applyCustomLogo();
-            saveState();
-            customLogoModal.style.display = 'none';
-            showNotification('Logo updated successfully!');
-        }
-
-        // Apply custom logo
-        function applyCustomLogo() {
-            customLogo.textContent = state.customLogo.text;
-            customLogo.style.backgroundColor = state.customLogo.color;
-        }
-
         // Show notification
         function showNotification(message) {
+            // Remove existing notification
+            const existingNotification = document.querySelector('.notification');
+            if (existingNotification) {
+                existingNotification.remove();
+            }
+            
             // Create notification element
             const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: var(--primary);
-                color: white;
-                padding: 12px 20px;
-                border-radius: 6px;
-                box-shadow: var(--shadow);
-                z-index: 1000;
-                transition: var(--transition);
-            `;
+            notification.className = 'notification';
             notification.textContent = message;
             
             document.body.appendChild(notification);
@@ -1381,7 +1301,9 @@
             setTimeout(() => {
                 notification.style.opacity = '0';
                 setTimeout(() => {
-                    document.body.removeChild(notification);
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
                 }, 300);
             }, 3000);
         }
