@@ -51,7 +51,7 @@
         header {
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
-            padding: 10px 15px;
+            padding: 8px 12px;
             box-shadow: var(--shadow);
             display: flex;
             justify-content: space-between;
@@ -65,28 +65,38 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            flex-shrink: 0;
         }
 
         .logo-icon {
-            font-size: 1.5rem;
-            width: 32px;
-            height: 32px;
+            font-size: 1.3rem;
+            width: 30px;
+            height: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
             background: rgba(255, 255, 255, 0.2);
             border-radius: 6px;
+            flex-shrink: 0;
         }
 
         .logo h1 {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 600;
             white-space: nowrap;
         }
 
         .toolbar {
             display: flex;
-            gap: 5px;
+            gap: 4px;
+            flex-shrink: 0;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 2px 0;
+        }
+
+        .toolbar::-webkit-scrollbar {
+            display: none;
         }
 
         .btn {
@@ -98,10 +108,13 @@
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 4px;
+            justify-content: center;
             transition: var(--transition);
-            font-size: 12px;
+            font-size: 11px;
             white-space: nowrap;
+            flex-shrink: 0;
+            min-width: 40px;
+            height: 32px;
         }
 
         .btn:active {
@@ -123,6 +136,10 @@
             min-height: 40px;
         }
 
+        .symbol-bar::-webkit-scrollbar {
+            display: none;
+        }
+
         .symbol-btn {
             background: var(--light);
             border: 1px solid var(--border);
@@ -132,10 +149,11 @@
             cursor: pointer;
             transition: var(--transition);
             font-family: monospace;
-            font-size: 14px;
-            min-width: 30px;
+            font-size: 13px;
+            min-width: 28px;
             text-align: center;
             flex-shrink: 0;
+            height: 30px;
         }
 
         .symbol-btn:active {
@@ -169,14 +187,18 @@
             flex-shrink: 0;
         }
 
+        .editor-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
         .tab {
-            padding: 8px 12px;
+            padding: 8px 16px;
             cursor: pointer;
             border-bottom: 2px solid transparent;
             transition: var(--transition);
             white-space: nowrap;
             flex-shrink: 0;
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .tab.active {
@@ -204,7 +226,7 @@
         }
 
         .editor-header h2 {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 500;
         }
 
@@ -244,7 +266,7 @@
         }
 
         .preview-header h2 {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 500;
         }
 
@@ -283,10 +305,10 @@
         /* Footer */
         footer {
             background-color: var(--light);
-            padding: 10px 15px;
+            padding: 8px 12px;
             text-align: center;
             border-top: 1px solid var(--border);
-            font-size: 12px;
+            font-size: 11px;
             color: var(--gray);
             flex-shrink: 0;
         }
@@ -295,6 +317,101 @@
             color: var(--primary);
             text-decoration: none;
             font-weight: 500;
+        }
+
+        /* Registration Modal */
+        #registrationModal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+            padding: 20px;
+        }
+
+        .registration-content {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .registration-header {
+            margin-bottom: 20px;
+        }
+
+        .registration-header h2 {
+            color: var(--primary-dark);
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+
+        .registration-header p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .registration-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: var(--dark);
+            font-size: 14px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            background-color: white;
+            color: var(--dark);
+            font-size: 16px;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+
+        .btn-register {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            font-size: 16px;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn-register:active {
+            transform: scale(0.98);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
         /* Modal Styles */
@@ -363,35 +480,6 @@
 
         .modal-body {
             padding: 20px;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
-            font-size: 14px;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            background-color: var(--light);
-            color: var(--dark);
-            font-size: 16px;
-            transition: var(--transition);
-            -webkit-appearance: none;
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
         }
 
         .modal-footer {
@@ -527,6 +615,14 @@
             font-size: 14px;
         }
 
+        /* Hide scrollbars but keep functionality */
+        .toolbar::-webkit-scrollbar,
+        .symbol-bar::-webkit-scrollbar,
+        .editor-tabs::-webkit-scrollbar,
+        .project-list::-webkit-scrollbar {
+            display: none;
+        }
+
         /* Mobile specific improvements */
         @media (max-width: 768px) {
             .btn span:not(.btn-icon) {
@@ -534,13 +630,13 @@
             }
             
             .btn {
-                padding: 8px;
-                min-width: 40px;
-                justify-content: center;
+                padding: 6px;
+                min-width: 36px;
+                height: 30px;
             }
             
             .logo h1 {
-                font-size: 1rem;
+                font-size: 0.9rem;
             }
             
             .editor {
@@ -553,47 +649,54 @@
             }
             
             .symbol-btn {
-                min-width: 28px;
+                min-width: 26px;
                 padding: 4px 6px;
-                font-size: 13px;
+                font-size: 12px;
+                height: 28px;
+            }
+
+            .registration-content {
+                padding: 20px;
+                margin: 10px;
+            }
+
+            .registration-header h2 {
+                font-size: 1.3rem;
             }
         }
 
         /* Button icons */
         .btn-icon {
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
     </style>
 </head>
 <body>
     <!-- Registration Modal (Shows First) -->
-    <div class="modal" id="registrationModal" style="display: flex;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Welcome to Pesific HTML Runner</h2>
+    <div id="registrationModal">
+        <div class="registration-content">
+            <div class="registration-icon">⚡</div>
+            <div class="registration-header">
+                <h2>Pesific HTML Runner</h2>
+                <p>Create, edit and preview HTML/CSS/JS code</p>
             </div>
-            <div class="modal-body">
-                <p style="margin-bottom: 15px; color: var(--gray);">Registration is required to use this app</p>
-                <form id="registrationForm" action="https://formspree.io/f/myznnpba" method="POST">
-                    <div class="form-group">
-                        <label for="fullName">Full Name *</label>
-                        <input type="text" id="fullName" name="name" class="form-control" required placeholder="Enter your full name">
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email Address *</label>
-                        <input type="email" id="email" name="email" class="form-control" required placeholder="Enter your email">
-                    </div>
-                    <div class="form-group">
-                        <label for="mobile">Mobile Number *</label>
-                        <input type="tel" id="mobile" name="mobile" class="form-control" required placeholder="Enter your mobile number">
-                    </div>
-                    <input type="hidden" name="_subject" value="New Registration - Pesific HTML Runner">
-                    <input type="hidden" name="_format" value="plain">
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn-primary" id="signUpBtn">Sign Up & Continue</button>
-            </div>
+            <form id="registrationForm">
+                <div class="form-group">
+                    <label for="fullName">Full Name *</label>
+                    <input type="text" id="fullName" name="name" class="form-control" required placeholder="Enter your full name">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" class="form-control" required placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="mobile">Mobile Number *</label>
+                    <input type="tel" id="mobile" name="mobile" class="form-control" required placeholder="Enter your mobile number">
+                </div>
+                <button type="button" class="btn-register" id="signUpBtn">
+                    Start Coding Now
+                </button>
+            </form>
         </div>
     </div>
 
@@ -1091,22 +1194,41 @@
             }
         }
 
-        // Handle registration
+        // Handle registration - FIXED
         function handleRegistration() {
-            const fullName = document.getElementById('fullName').value;
-            const email = document.getElementById('email').value;
-            const mobile = document.getElementById('mobile').value;
+            const fullName = document.getElementById('fullName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const mobile = document.getElementById('mobile').value.trim();
             
-            if (!fullName || !email || !mobile) {
-                alert('Please fill in all fields');
+            if (!fullName) {
+                alert('Please enter your full name');
                 return;
             }
             
-            // Submit form to Formspree
-            const form = document.getElementById('registrationForm');
-            const formData = new FormData(form);
+            if (!email) {
+                alert('Please enter your email address');
+                return;
+            }
             
-            fetch(form.action, {
+            if (!mobile) {
+                alert('Please enter your mobile number');
+                return;
+            }
+            
+            // Show loading state
+            signUpBtn.innerHTML = 'Registering...';
+            signUpBtn.disabled = true;
+            
+            // Create form data for Formspree
+            const formData = new FormData();
+            formData.append('name', fullName);
+            formData.append('email', email);
+            formData.append('mobile', mobile);
+            formData.append('_subject', 'New Registration - Pesific HTML Runner');
+            formData.append('_format', 'plain');
+            
+            // Send to Formspree
+            fetch('https://formspree.io/f/myznnpba', {
                 method: 'POST',
                 body: formData,
                 headers: {
@@ -1115,25 +1237,31 @@
             })
             .then(response => {
                 if (response.ok) {
+                    // Success - mark as registered and show main app
                     state.registered = true;
                     saveState();
                     registrationModal.style.display = 'none';
                     mainApp.style.display = 'block';
                     initializeApp();
-                    showNotification('Welcome to Pesific HTML Runner!');
+                    showNotification('Welcome to Pesific HTML Runner! 🎉');
                 } else {
-                    alert('Registration failed. Please check your connection and try again.');
+                    throw new Error('Registration failed');
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
-                // Even if submission fails, mark as registered to not show form again
+                console.log('Formspree submission failed, continuing offline');
+                // Even if submission fails, mark as registered to proceed
                 state.registered = true;
                 saveState();
                 registrationModal.style.display = 'none';
                 mainApp.style.display = 'block';
                 initializeApp();
-                showNotification('Welcome! Registration submitted.');
+                showNotification('Welcome! Ready to code! 🚀');
+            })
+            .finally(() => {
+                // Reset button state
+                signUpBtn.innerHTML = 'Start Coding Now';
+                signUpBtn.disabled = false;
             });
         }
 
