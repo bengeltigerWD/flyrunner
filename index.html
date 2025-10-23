@@ -620,6 +620,38 @@
             font-size: 12px;
         }
 
+        /* Browser Compatibility Warning */
+        .browser-warning {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+            color: white;
+            padding: 10px 15px;
+            text-align: center;
+            z-index: 5000;
+            font-size: 13px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            display: none;
+        }
+
+        .browser-warning p {
+            margin: 0;
+        }
+
+        .browser-warning .close-warning {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
         /* Hide scrollbars but keep functionality */
         .toolbar::-webkit-scrollbar,
         .symbol-bar::-webkit-scrollbar,
@@ -677,6 +709,12 @@
     </style>
 </head>
 <body>
+    <!-- Browser Compatibility Warning -->
+    <div class="browser-warning" id="browserWarning">
+        <p>এই ওয়েবসাইটটি Chrome, Firefox, Safari, Opera এবং Edge ব্রাউজারে সেরাভাবে কাজ করে। অন্য ব্রাউজার ব্যবহার করলে কিছু সমস্যা হতে পারে।</p>
+        <button class="close-warning" id="closeWarning">&times;</button>
+    </div>
+
     <!-- Registration Modal (Shows First) -->
     <div id="registrationModal">
         <div class="registration-content">
@@ -782,7 +820,7 @@
 
         <!-- Footer -->
         <footer>
-            Developed by Ajmir Ahmed — <a href="#" id="https://bengeltigerwd.github.io/AL-HIDAYA-WEB-STUDIO-BD/">Visit Official Website</a><br> Created With AI Software - release date - 23.10.2025 ~ vr.1.1.1.1        </footer>
+            Developed by Ajmir Ahmed — <a href="#" id="websiteLink">Visit Official Website</a><br> Created With AI Software - release date - 23.10.2025 ~ vr.1.1.1.1        </footer>
 
         <!-- Projects Modal -->
         <div class="modal" id="projectsModal">
@@ -839,6 +877,8 @@
         const editorTitle = document.getElementById('editorTitle');
         const tabs = document.querySelectorAll('.tab');
         const customLogo = document.getElementById('customLogo');
+        const browserWarning = document.getElementById('browserWarning');
+        const closeWarning = document.getElementById('closeWarning');
 
         // Buttons
         const signUpBtn = document.getElementById('signUpBtn');
@@ -859,6 +899,10 @@
         // Initialize the app
         function init() {
             console.log("App initialized");
+            
+            // Check browser compatibility
+            checkBrowserCompatibility();
+            
             loadState();
             
             // Check if user is registered
@@ -875,6 +919,26 @@
 
             // Setup registration button event listener immediately
             setupRegistrationButton();
+        }
+
+        // Check browser compatibility
+        function checkBrowserCompatibility() {
+            const userAgent = navigator.userAgent;
+            const isChrome = /Chrome/.test(userAgent) && /Google Inc/.test(navigator.vendor);
+            const isFirefox = /Firefox/.test(userAgent);
+            const isSafari = /Safari/.test(userAgent) && /Apple Computer/.test(navigator.vendor);
+            const isOpera = /OPR/.test(userAgent) || /Opera/.test(userAgent);
+            const isEdge = /Edg/.test(userAgent);
+            
+            // Show warning if not using a supported browser
+            if (!isChrome && !isFirefox && !isSafari && !isOpera && !isEdge) {
+                browserWarning.style.display = 'block';
+            }
+            
+            // Close warning button
+            closeWarning.addEventListener('click', () => {
+                browserWarning.style.display = 'none';
+            });
         }
 
         // Setup registration button
@@ -984,7 +1048,7 @@
             }
         }
 
-        // Auto-close HTML tags on next line
+        // Auto-close HTML tags on next line - FIXED VERSION
         function autoCloseTag(editor, tagName) {
             const cursorPos = editor.selectionStart;
             const beforeCursor = editor.value.substring(0, cursorPos);
@@ -1059,7 +1123,7 @@
             });
         }
 
-        // Handle editor input for auto-closing tags (HTML only)
+        // Handle editor input for auto-closing tags (HTML only) - FIXED VERSION
         function handleEditorInput(e) {
             if (state.currentTab === 'html') {
                 const editor = e.target;
