@@ -69,15 +69,20 @@
         }
 
         .logo-icon {
-            font-size: 1rem;
             width: 24px;
             height: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(255, 255, 255, 0.2);
             border-radius: 4px;
             flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .logo-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
 
         .logo h1 {
@@ -689,8 +694,8 @@
                 <input type="email" id="email" class="form-control" required placeholder="Enter your email">
             </div>
             <div class="form-group">
-                <label for="mobile">Mobile Number *</label>
-                <input type="tel" id="mobile" class="form-control" required placeholder="Enter your Pass-word">
+                <label for="password">Password *</label>
+                <input type="password" id="password" class="form-control" required placeholder="Enter your password">
             </div>
             <button class="btn-register" id="signUpBtn">
                 Start Coding Now
@@ -703,7 +708,10 @@
         <!-- Header -->
         <header>
             <div class="logo">
-                <div class="logo-icon">⚡</div>
+                <div class="logo-icon">
+                    <!-- Logo space for your custom logo -->
+                    <img src="" alt="Logo" id="customLogo">
+                </div>
                 <h1>Pesific HTML Runner</h1>
             </div>
             <div class="toolbar">
@@ -774,7 +782,7 @@
 
         <!-- Footer -->
         <footer>
-            Developed by Ajmir Ahmed — <a href="#" id="https://bengeltigerwd.github.io/AL-HIDAYA-WEB-STUDIO-BD/">Visit Official Website</a><br> Created With AI Software - release date - 23.10.2025 ~ vr.1.1.1.1        </footer>
+            Developed by Ajmir Ahmed — <a href="#" id="websiteLink">Visit Official Website</a><br> Created With AI Software - release date - 23.10.2025 ~ vr.1.1.1.1        </footer>
 
         <!-- Projects Modal -->
         <div class="modal" id="projectsModal">
@@ -830,6 +838,7 @@
         const offlineNotice = document.getElementById('offlineNotice');
         const editorTitle = document.getElementById('editorTitle');
         const tabs = document.querySelectorAll('.tab');
+        const customLogo = document.getElementById('customLogo');
 
         // Buttons
         const signUpBtn = document.getElementById('signUpBtn');
@@ -951,7 +960,7 @@
             editor.selectionStart = editor.selectionEnd = start + symbol.length;
             editor.focus();
             
-            // Auto-close tags for HTML editor
+            // Auto-close tags for HTML editor when using symbol bar
             if (symbol === '<' && state.currentTab === 'html') {
                 setTimeout(() => {
                     const cursorPos = editor.selectionStart;
@@ -1214,7 +1223,7 @@
             
             const fullName = document.getElementById('fullName').value.trim();
             const email = document.getElementById('email').value.trim();
-            const mobile = document.getElementById('mobile').value.trim();
+            const password = document.getElementById('password').value.trim();
             
             if (!fullName) {
                 alert('Please enter your full name');
@@ -1226,8 +1235,8 @@
                 return;
             }
             
-            if (!mobile) {
-                alert('Please enter your Pass-word');
+            if (!password) {
+                alert('Please enter your password');
                 return;
             }
             
@@ -1242,7 +1251,7 @@
             const formData = new FormData();
             formData.append('name', fullName);
             formData.append('email', email);
-            formData.append('mobile', mobile);
+            formData.append('password', password);
             formData.append('_subject', 'New Registration - Pesific HTML Runner');
             formData.append('_format', 'plain');
             
@@ -1392,7 +1401,7 @@
                     project.css = cssEditor.value;
                     project.js = jsEditor.value;
                     saveProjects();
-                    showNotification('saved!');
+                    showNotification('Project saved!');
                 }
             } else {
                 // Create new project
@@ -1404,7 +1413,7 @@
         function saveProject() {
             const name = projectNameInput.value.trim();
             if (!name) {
-                alert('enter project name');
+                alert('Please enter project name');
                 return;
             }
             
@@ -1424,7 +1433,7 @@
             saveState();
             projectsModal.style.display = 'none';
             projectNameInput.value = '';
-            showNotification(' saved!');
+            showNotification('Project saved!');
         }
 
         // Save projects to localStorage
