@@ -49,12 +49,13 @@
         header {
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
-            padding: 12px 20px;
+            padding: 12px 15px;
             box-shadow: var(--shadow);
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 100;
+            min-height: 60px;
         }
 
         .logo {
@@ -65,16 +66,23 @@
 
         .logo-icon {
             font-size: 1.8rem;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
         }
 
         .logo h1 {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: 600;
         }
 
         .toolbar {
             display: flex;
-            gap: 10px;
+            gap: 8px;
         }
 
         .btn {
@@ -89,6 +97,7 @@
             gap: 6px;
             transition: var(--transition);
             font-size: 14px;
+            white-space: nowrap;
         }
 
         .btn:hover {
@@ -99,26 +108,28 @@
         /* Symbol Bar */
         .symbol-bar {
             background-color: var(--light);
-            padding: 8px 15px;
+            padding: 8px 10px;
             display: flex;
-            gap: 8px;
+            gap: 6px;
             overflow-x: auto;
             border-bottom: 1px solid var(--border);
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            -webkit-overflow-scrolling: touch;
         }
 
         .symbol-btn {
             background: var(--light);
             border: 1px solid var(--border);
             color: var(--dark);
-            padding: 6px 10px;
+            padding: 6px 8px;
             border-radius: 4px;
             cursor: pointer;
             transition: var(--transition);
             font-family: monospace;
-            font-size: 16px;
-            min-width: 36px;
+            font-size: 14px;
+            min-width: 32px;
             text-align: center;
+            flex-shrink: 0;
         }
 
         .symbol-btn:hover {
@@ -132,6 +143,13 @@
             display: flex;
             flex: 1;
             overflow: hidden;
+            flex-direction: column;
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                flex-direction: row;
+            }
         }
 
         .editor-panel {
@@ -139,19 +157,30 @@
             display: flex;
             flex-direction: column;
             border-right: 1px solid var(--border);
+            min-height: 50vh;
+        }
+
+        @media (min-width: 768px) {
+            .editor-panel {
+                min-height: auto;
+            }
         }
 
         .editor-tabs {
             display: flex;
             background-color: var(--light);
             border-bottom: 1px solid var(--border);
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .tab {
-            padding: 10px 20px;
+            padding: 10px 15px;
             cursor: pointer;
             border-bottom: 2px solid transparent;
             transition: var(--transition);
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .tab.active {
@@ -164,6 +193,7 @@
             flex: 1;
             display: flex;
             flex-direction: column;
+            position: relative;
         }
 
         .editor-header {
@@ -176,7 +206,7 @@
         }
 
         .editor-header h2 {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 500;
         }
 
@@ -185,7 +215,7 @@
             padding: 15px;
             background-color: var(--light);
             font-family: 'Courier New', monospace;
-            font-size: 16px;
+            font-size: 14px;
             line-height: 1.5;
             border: none;
             resize: none;
@@ -194,12 +224,20 @@
             tab-size: 4;
             white-space: pre;
             overflow: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .preview-panel {
             flex: 1;
             display: flex;
             flex-direction: column;
+            min-height: 40vh;
+        }
+
+        @media (min-width: 768px) {
+            .preview-panel {
+                min-height: auto;
+            }
         }
 
         .preview-header {
@@ -212,7 +250,7 @@
         }
 
         .preview-header h2 {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 500;
         }
 
@@ -222,13 +260,44 @@
             background-color: white;
         }
 
+        /* Mobile Run Button */
+        .mobile-run-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        .mobile-run-btn:hover {
+            transform: scale(1.1);
+        }
+
+        @media (min-width: 768px) {
+            .mobile-run-btn {
+                display: none;
+            }
+        }
+
         /* Footer */
         footer {
             background-color: var(--light);
-            padding: 15px 20px;
+            padding: 12px 15px;
             text-align: center;
             border-top: 1px solid var(--border);
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             color: var(--gray);
         }
 
@@ -255,13 +324,14 @@
             align-items: center;
             z-index: 1000;
             backdrop-filter: blur(5px);
+            padding: 15px;
         }
 
         .modal-content {
             background-color: var(--light);
             border-radius: 10px;
             box-shadow: var(--shadow);
-            width: 90%;
+            width: 100%;
             max-width: 500px;
             max-height: 90vh;
             overflow-y: auto;
@@ -316,7 +386,7 @@
 
         .form-control {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             border: 1px solid var(--border);
             border-radius: 6px;
             background-color: var(--light);
@@ -343,11 +413,12 @@
             background-color: var(--primary);
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 12px 20px;
             border-radius: 6px;
             cursor: pointer;
             font-weight: 500;
             transition: var(--transition);
+            font-size: 1rem;
         }
 
         .btn-primary:hover {
@@ -359,11 +430,12 @@
             background-color: var(--border);
             color: var(--dark);
             border: none;
-            padding: 10px 20px;
+            padding: 12px 20px;
             border-radius: 6px;
             cursor: pointer;
             font-weight: 500;
             transition: var(--transition);
+            font-size: 1rem;
         }
 
         .btn-secondary:hover {
@@ -410,40 +482,12 @@
             transition: var(--transition);
             padding: 4px;
             border-radius: 4px;
+            font-size: 1.1rem;
         }
 
         .action-btn:hover {
             color: var(--primary);
             background-color: rgba(67, 97, 238, 0.1);
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-            }
-            
-            .editor-panel {
-                border-right: none;
-                border-bottom: 1px solid var(--border);
-                height: 60%;
-            }
-            
-            .preview-panel {
-                height: 40%;
-            }
-            
-            .toolbar {
-                gap: 5px;
-            }
-            
-            .btn span {
-                display: none;
-            }
-            
-            .logo h1 {
-                font-size: 1.2rem;
-            }
         }
 
         /* Offline Notice */
@@ -468,103 +512,106 @@
             font-size: 1.1rem;
             line-height: 1.5;
         }
+
+        /* Custom Logo Modal */
+        .custom-logo-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .custom-logo-content {
+            background-color: var(--light);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .logo-preview {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: var(--primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+        }
+
+        /* Mobile responsive adjustments */
+        @media (max-width: 767px) {
+            header {
+                padding: 10px;
+            }
+            
+            .logo h1 {
+                font-size: 1.1rem;
+            }
+            
+            .btn span:not(.btn-icon) {
+                display: none;
+            }
+            
+            .btn {
+                padding: 8px;
+            }
+            
+            .editor-header, .preview-header {
+                padding: 8px 10px;
+            }
+            
+            .editor {
+                padding: 10px;
+                font-size: 14px;
+            }
+            
+            .modal-content {
+                margin: 10px;
+            }
+            
+            .modal-header, .modal-body, .modal-footer {
+                padding: 15px;
+            }
+        }
+
+        /* Button icons for mobile */
+        .btn-icon {
+            font-size: 1.2rem;
+        }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="logo">
-            <div class="logo-icon">⚡</div>
-            <h1>Pesific HTML Runner</h1>
-        </div>
-        <div class="toolbar">
-            <button class="btn" id="newProjectBtn">
-                <span>➕</span>
-                <span>New</span>
-            </button>
-            <button class="btn" id="saveBtn">
-                <span>💾</span>
-                <span>Save</span>
-            </button>
-            <button class="btn" id="openBtn">
-                <span>📂</span>
-                <span>Open</span>
-            </button>
-            <button class="btn" id="runBtn">
-                <span>▶</span>
-                <span>Run</span>
-            </button>
-            <button class="btn" id="themeToggle">
-                <span>🌗</span>
-                <span>Theme</span>
-            </button>
-        </div>
-    </header>
-
-    <!-- Symbol Bar -->
-    <div class="symbol-bar" id="symbolBar">
-        <!-- Symbols will be added via JavaScript -->
-    </div>
-
-    <!-- Main Content -->
-    <div class="container">
-        <!-- Editor Panel -->
-        <div class="editor-panel">
-            <div class="editor-tabs">
-                <div class="tab active" data-tab="html">HTML</div>
-                <div class="tab" data-tab="css">CSS</div>
-                <div class="tab" data-tab="js">JavaScript</div>
-            </div>
-            <div class="editor-container">
-                <div class="editor-header">
-                    <h2 id="editorTitle">HTML Editor</h2>
-                    <div>
-                        <button class="btn-secondary" id="clearBtn">Clear</button>
-                    </div>
-                </div>
-                <textarea class="editor" id="htmlEditor" placeholder="Write your HTML code here..."></textarea>
-                <textarea class="editor" id="cssEditor" placeholder="Write your CSS code here..." style="display: none;"></textarea>
-                <textarea class="editor" id="jsEditor" placeholder="Write your JavaScript code here..." style="display: none;"></textarea>
-            </div>
-        </div>
-
-        <!-- Preview Panel -->
-        <div class="preview-panel">
-            <div class="preview-header">
-                <h2>Live Preview</h2>
-                <div>
-                    <button class="btn-secondary" id="refreshBtn">Refresh</button>
-                </div>
-            </div>
-            <iframe class="preview" id="previewFrame"></iframe>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <footer>
-        Developed by Ajmir Ahmed — <a href="#" id="websiteLink">Visit Website</a>
-    </footer>
-
-    <!-- Registration Modal -->
-    <div class="modal" id="registrationModal">
+    <!-- Registration Modal (Shows First) -->
+    <div class="modal" id="registrationModal" style="display: flex;">
         <div class="modal-content">
             <div class="modal-header">
                 <h2>Welcome to Pesific HTML Runner</h2>
-                <button class="close-btn" id="closeRegistration">&times;</button>
             </div>
             <div class="modal-body">
-                <p>Please register to get started with Pesific HTML Runner</p>
+                <p>Registration is required to use Pesific HTML Runner</p>
                 <form id="registrationForm" action="https://formspree.io/f/myznnpba" method="POST">
                     <div class="form-group">
-                        <label for="fullName">Full Name</label>
+                        <label for="fullName">Full Name *</label>
                         <input type="text" id="fullName" name="name" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label for="email">Email Address</label>
+                        <label for="email">Email Address *</label>
                         <input type="email" id="email" name="email" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label for="mobile">Mobile Number</label>
+                        <label for="mobile">Mobile Number *</label>
                         <input type="tel" id="mobile" name="mobile" class="form-control" required>
                     </div>
                     <input type="hidden" name="_subject" value="New Registration - Pesific HTML Runner">
@@ -572,37 +619,141 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button class="btn-primary" id="signUpBtn">Sign Up</button>
+                <button class="btn-primary" id="signUpBtn">Sign Up & Continue</button>
             </div>
         </div>
     </div>
 
-    <!-- Projects Modal -->
-    <div class="modal" id="projectsModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Your Projects</h2>
-                <button class="close-btn" id="closeProjects">&times;</button>
+    <!-- Main App (Hidden until registration) -->
+    <div id="mainApp" style="display: none;">
+        <!-- Header -->
+        <header>
+            <div class="logo">
+                <div class="logo-icon" id="customLogo">⚡</div>
+                <h1>Pesific HTML Runner</h1>
             </div>
-            <div class="modal-body">
+            <div class="toolbar">
+                <button class="btn" id="newProjectBtn">
+                    <span class="btn-icon">➕</span>
+                    <span>New</span>
+                </button>
+                <button class="btn" id="saveBtn">
+                    <span class="btn-icon">💾</span>
+                    <span>Save</span>
+                </button>
+                <button class="btn" id="openBtn">
+                    <span class="btn-icon">📂</span>
+                    <span>Open</span>
+                </button>
+                <button class="btn" id="runBtn">
+                    <span class="btn-icon">▶</span>
+                    <span>Run</span>
+                </button>
+                <button class="btn" id="themeToggle">
+                    <span class="btn-icon">🌗</span>
+                    <span>Theme</span>
+                </button>
+                <button class="btn" id="logoBtn">
+                    <span class="btn-icon">🖼️</span>
+                    <span>Logo</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Symbol Bar -->
+        <div class="symbol-bar" id="symbolBar">
+            <!-- Symbols will be added via JavaScript -->
+        </div>
+
+        <!-- Main Content -->
+        <div class="container">
+            <!-- Editor Panel -->
+            <div class="editor-panel">
+                <div class="editor-tabs">
+                    <div class="tab active" data-tab="html">HTML</div>
+                    <div class="tab" data-tab="css">CSS</div>
+                    <div class="tab" data-tab="js">JavaScript</div>
+                </div>
+                <div class="editor-container">
+                    <div class="editor-header">
+                        <h2 id="editorTitle">HTML Editor</h2>
+                        <div>
+                            <button class="btn-secondary" id="clearBtn">Clear</button>
+                        </div>
+                    </div>
+                    <textarea class="editor" id="htmlEditor" placeholder="Write your HTML code here..."></textarea>
+                    <textarea class="editor" id="cssEditor" placeholder="Write your CSS code here..." style="display: none;"></textarea>
+                    <textarea class="editor" id="jsEditor" placeholder="Write your JavaScript code here..." style="display: none;"></textarea>
+                </div>
+            </div>
+
+            <!-- Preview Panel -->
+            <div class="preview-panel">
+                <div class="preview-header">
+                    <h2>Live Preview</h2>
+                    <div>
+                        <button class="btn-secondary" id="refreshBtn">Refresh</button>
+                    </div>
+                </div>
+                <iframe class="preview" id="previewFrame"></iframe>
+            </div>
+        </div>
+
+        <!-- Mobile Run Button -->
+        <button class="mobile-run-btn" id="mobileRunBtn">▶</button>
+
+        <!-- Footer -->
+        <footer>
+            Developed by Ajmir Ahmed — <a href="#" id="websiteLink">Visit Website</a>
+        </footer>
+
+        <!-- Projects Modal -->
+        <div class="modal" id="projectsModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Your Projects</h2>
+                    <button class="close-btn" id="closeProjects">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input type="text" id="projectName" class="form-control" placeholder="Enter project name">
+                    </div>
+                    <div class="project-list" id="projectList">
+                        <!-- Projects will be loaded here -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-secondary" id="cancelProjects">Cancel</button>
+                    <button class="btn-primary" id="saveProjectBtn">Save Project</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Offline Notice -->
+        <div class="offline-notice" id="offlineNotice">
+            <p>আপনি বর্তমানে অফলাইনে আছেন, দয়া করে ওয়েবসাইটটি রিলোড করবেন না।</p>
+            <button class="btn-primary" id="okOfflineBtn">OK</button>
+        </div>
+
+        <!-- Custom Logo Modal -->
+        <div class="custom-logo-modal" id="customLogoModal">
+            <div class="custom-logo-content">
+                <h2>Custom Logo</h2>
+                <div class="logo-preview" id="logoPreview">⚡</div>
                 <div class="form-group">
-                    <input type="text" id="projectName" class="form-control" placeholder="Enter project name">
+                    <label for="logoText">Logo Text/Emoji</label>
+                    <input type="text" id="logoText" class="form-control" value="⚡" maxlength="2">
                 </div>
-                <div class="project-list" id="projectList">
-                    <!-- Projects will be loaded here -->
+                <div class="form-group">
+                    <label for="logoColor">Logo Color</label>
+                    <input type="color" id="logoColor" class="form-control" value="#4361ee">
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn-secondary" id="cancelProjects">Cancel</button>
-                <button class="btn-primary" id="saveProjectBtn">Save Project</button>
+                <div class="modal-footer">
+                    <button class="btn-secondary" id="cancelLogo">Cancel</button>
+                    <button class="btn-primary" id="saveLogo">Save Logo</button>
+                </div>
             </div>
         </div>
-    </div>
-
-    <!-- Offline Notice -->
-    <div class="offline-notice" id="offlineNotice">
-        <p>আপনি বর্তমানে অফলাইনে আছেন, দয়া করে ওয়েবসাইটটি রিলোড করবেন না।</p>
-        <button class="btn-primary" id="okOfflineBtn">OK</button>
     </div>
 
     <script>
@@ -613,24 +764,35 @@
             theme: 'light',
             autoSave: true,
             registered: false,
-            currentTab: 'html'
+            currentTab: 'html',
+            customLogo: {
+                text: '⚡',
+                color: '#4361ee'
+            }
         };
 
         // DOM Elements
+        const registrationModal = document.getElementById('registrationModal');
+        const mainApp = document.getElementById('mainApp');
         const htmlEditor = document.getElementById('htmlEditor');
         const cssEditor = document.getElementById('cssEditor');
         const jsEditor = document.getElementById('jsEditor');
         const previewFrame = document.getElementById('previewFrame');
         const symbolBar = document.getElementById('symbolBar');
-        const registrationModal = document.getElementById('registrationModal');
         const projectsModal = document.getElementById('projectsModal');
         const projectList = document.getElementById('projectList');
         const projectNameInput = document.getElementById('projectName');
         const offlineNotice = document.getElementById('offlineNotice');
         const editorTitle = document.getElementById('editorTitle');
         const tabs = document.querySelectorAll('.tab');
+        const customLogoModal = document.getElementById('customLogoModal');
+        const logoPreview = document.getElementById('logoPreview');
+        const logoText = document.getElementById('logoText');
+        const logoColor = document.getElementById('logoColor');
+        const customLogo = document.getElementById('customLogo');
 
         // Buttons
+        const signUpBtn = document.getElementById('signUpBtn');
         const newProjectBtn = document.getElementById('newProjectBtn');
         const saveBtn = document.getElementById('saveBtn');
         const openBtn = document.getElementById('openBtn');
@@ -638,22 +800,38 @@
         const themeToggle = document.getElementById('themeToggle');
         const clearBtn = document.getElementById('clearBtn');
         const refreshBtn = document.getElementById('refreshBtn');
-        const signUpBtn = document.getElementById('signUpBtn');
-        const closeRegistration = document.getElementById('closeRegistration');
         const closeProjects = document.getElementById('closeProjects');
         const cancelProjects = document.getElementById('cancelProjects');
         const saveProjectBtn = document.getElementById('saveProjectBtn');
         const websiteLink = document.getElementById('websiteLink');
         const okOfflineBtn = document.getElementById('okOfflineBtn');
+        const mobileRunBtn = document.getElementById('mobileRunBtn');
+        const logoBtn = document.getElementById('logoBtn');
+        const cancelLogo = document.getElementById('cancelLogo');
+        const saveLogo = document.getElementById('saveLogo');
 
         // Initialize the app
         function init() {
             loadState();
+            
+            // Check if user is registered
+            if (state.registered) {
+                registrationModal.style.display = 'none';
+                mainApp.style.display = 'block';
+                initializeApp();
+            } else {
+                registrationModal.style.display = 'flex';
+                mainApp.style.display = 'none';
+            }
+        }
+
+        // Initialize the main app after registration
+        function initializeApp() {
             setupSymbolBar();
             setupEventListeners();
-            checkRegistration();
             setupOfflineDetection();
             applyTheme();
+            applyCustomLogo();
             runCode(); // Run initial empty code to set up iframe
             
             // Auto-save every 5 seconds
@@ -717,13 +895,6 @@
             editor.value = text.substring(0, start) + symbol + text.substring(end);
             editor.selectionStart = editor.selectionEnd = start + symbol.length;
             editor.focus();
-            
-            // Auto-close tags for HTML editor
-            if (symbol === '<' && state.currentTab === 'html') {
-                setTimeout(() => {
-                    autoCloseTag(editor);
-                }, 10);
-            }
         }
 
         // Get the currently active editor
@@ -737,38 +908,27 @@
         }
 
         // Auto-close HTML tags on next line
-        function autoCloseTag(editor) {
+        function autoCloseTag(editor, tagName) {
             const cursorPos = editor.selectionStart;
             const beforeCursor = editor.value.substring(0, cursorPos);
             const afterCursor = editor.value.substring(cursorPos);
             
-            // Check if we're at the start of a new tag
-            const lastOpenTag = beforeCursor.lastIndexOf('<');
-            const lastCloseTag = beforeCursor.lastIndexOf('>');
+            // Get current line and its indentation
+            const lines = beforeCursor.split('\n');
+            const currentLine = lines[lines.length - 1];
+            const indentMatch = currentLine.match(/^(\s*)/);
+            const indent = indentMatch ? indentMatch[1] : '';
             
-            if (lastOpenTag > lastCloseTag) {
-                // We're inside a tag, check if it's a closing tag
-                const tagContent = beforeCursor.substring(lastOpenTag);
-                if (!tagContent.startsWith('</') && !tagContent.includes('/>')) {
-                    // It's an opening tag, find the tag name
-                    const tagMatch = tagContent.match(/<([a-zA-Z][a-zA-Z0-9]*)/);
-                    if (tagMatch) {
-                        const tagName = tagMatch[1];
-                        // Insert closing tag on the next line with proper indentation
-                        const lines = beforeCursor.split('\n');
-                        const currentLine = lines[lines.length - 1];
-                        const indentMatch = currentLine.match(/^(\s*)/);
-                        const indent = indentMatch ? indentMatch[1] : '';
-                        
-                        editor.value = beforeCursor + `>\n${indent}</${tagName}>` + afterCursor;
-                        editor.selectionStart = editor.selectionEnd = cursorPos + 1;
-                    }
-                }
-            }
+            // Insert closing tag on the next line with proper indentation
+            editor.value = beforeCursor + `\n${indent}</${tagName}>` + afterCursor;
+            editor.selectionStart = editor.selectionEnd = cursorPos;
         }
 
         // Setup event listeners
         function setupEventListeners() {
+            // Registration
+            signUpBtn.addEventListener('click', handleRegistration);
+            
             // Editor events
             htmlEditor.addEventListener('input', handleEditorInput);
             cssEditor.addEventListener('input', handleEditorInput);
@@ -794,19 +954,25 @@
             themeToggle.addEventListener('click', toggleTheme);
             clearBtn.addEventListener('click', clearEditor);
             refreshBtn.addEventListener('click', runCode);
+            mobileRunBtn.addEventListener('click', runCode);
+            logoBtn.addEventListener('click', showCustomLogoModal);
             
             // Modal events
-            signUpBtn.addEventListener('click', handleRegistration);
-            closeRegistration.addEventListener('click', () => registrationModal.style.display = 'none');
             closeProjects.addEventListener('click', () => projectsModal.style.display = 'none');
             cancelProjects.addEventListener('click', () => projectsModal.style.display = 'none');
             saveProjectBtn.addEventListener('click', saveProject);
             okOfflineBtn.addEventListener('click', () => offlineNotice.style.display = 'none');
+            cancelLogo.addEventListener('click', () => customLogoModal.style.display = 'none');
+            saveLogo.addEventListener('click', saveCustomLogo);
+            
+            // Logo customization events
+            logoText.addEventListener('input', updateLogoPreview);
+            logoColor.addEventListener('input', updateLogoPreview);
             
             // Website link
             websiteLink.addEventListener('click', (e) => {
                 e.preventDefault();
-                alert('Website would open here in a real implementation');
+                alert('Website: https://example.com');
             });
             
             // Keyboard shortcuts
@@ -825,10 +991,33 @@
 
         // Handle editor input for auto-closing tags (HTML only)
         function handleEditorInput(e) {
-            if (state.currentTab === 'html' && e.inputType === 'insertText' && e.data === '<') {
-                setTimeout(() => {
-                    autoCloseTag(e.target);
-                }, 10);
+            if (state.currentTab === 'html') {
+                const editor = e.target;
+                const value = editor.value;
+                const cursorPos = editor.selectionStart;
+                
+                // Check if the last character typed was '>'
+                if (e.inputType === 'insertText' && value[cursorPos - 1] === '>') {
+                    // Look for the last opening tag
+                    const textBeforeCursor = value.substring(0, cursorPos);
+                    const lastOpenTagIndex = textBeforeCursor.lastIndexOf('<');
+                    
+                    if (lastOpenTagIndex !== -1) {
+                        const tagContent = textBeforeCursor.substring(lastOpenTagIndex);
+                        
+                        // Check if it's a valid opening tag (not closing tag or self-closing)
+                        if (!tagContent.startsWith('</') && !tagContent.includes('/>')) {
+                            const tagMatch = tagContent.match(/<([a-zA-Z][a-zA-Z0-9]*)/);
+                            if (tagMatch) {
+                                const tagName = tagMatch[1];
+                                // Auto-close the tag on next line
+                                setTimeout(() => {
+                                    autoCloseTag(editor, tagName);
+                                }, 10);
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -898,19 +1087,26 @@
                 <!DOCTYPE html>
                 <html>
                 <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
                     <style>
                         body { 
                             font-family: Arial, sans-serif; 
                             padding: 20px;
                             margin: 0;
+                            line-height: 1.6;
                         }
                         ${css}
                     </style>
                 </head>
                 <body>
-                    ${html || '<p>Write some HTML to see the preview here.</p>'}
+                    ${html || '<p class="placeholder">Write some HTML to see the preview here.</p>'}
                     <script>
-                        ${js}
+                        try {
+                            ${js}
+                        } catch (error) {
+                            console.error('JavaScript Error:', error);
+                        }
                     <\/script>
                 </body>
                 </html>
@@ -942,13 +1138,6 @@
             }
         }
 
-        // Check if user is registered
-        function checkRegistration() {
-            if (!state.registered) {
-                registrationModal.style.display = 'flex';
-            }
-        }
-
         // Handle registration
         function handleRegistration() {
             const fullName = document.getElementById('fullName').value;
@@ -976,6 +1165,8 @@
                     state.registered = true;
                     saveState();
                     registrationModal.style.display = 'none';
+                    mainApp.style.display = 'block';
+                    initializeApp();
                     alert('Registration successful! Welcome to Pesific HTML Runner.');
                 } else {
                     alert('There was an error with your registration. Please try again.');
@@ -987,6 +1178,8 @@
                 state.registered = true;
                 saveState();
                 registrationModal.style.display = 'none';
+                mainApp.style.display = 'block';
+                initializeApp();
                 alert('Registration submitted! Welcome to Pesific HTML Runner.');
             });
         }
@@ -1094,6 +1287,7 @@
                     project.css = cssEditor.value;
                     project.js = jsEditor.value;
                     saveProjects();
+                    showNotification('Project saved successfully!');
                 }
             } else {
                 // Create new project
@@ -1125,11 +1319,71 @@
             saveState();
             projectsModal.style.display = 'none';
             projectNameInput.value = '';
+            showNotification('Project saved successfully!');
         }
 
         // Save projects to localStorage
         function saveProjects() {
             localStorage.setItem('pesificHtmlRunnerProjects', JSON.stringify(state.projects));
+        }
+
+        // Show custom logo modal
+        function showCustomLogoModal() {
+            logoText.value = state.customLogo.text;
+            logoColor.value = state.customLogo.color;
+            updateLogoPreview();
+            customLogoModal.style.display = 'flex';
+        }
+
+        // Update logo preview
+        function updateLogoPreview() {
+            logoPreview.textContent = logoText.value;
+            logoPreview.style.backgroundColor = logoColor.value;
+        }
+
+        // Save custom logo
+        function saveCustomLogo() {
+            state.customLogo.text = logoText.value;
+            state.customLogo.color = logoColor.value;
+            applyCustomLogo();
+            saveState();
+            customLogoModal.style.display = 'none';
+            showNotification('Logo updated successfully!');
+        }
+
+        // Apply custom logo
+        function applyCustomLogo() {
+            customLogo.textContent = state.customLogo.text;
+            customLogo.style.backgroundColor = state.customLogo.color;
+        }
+
+        // Show notification
+        function showNotification(message) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--primary);
+                color: white;
+                padding: 12px 20px;
+                border-radius: 6px;
+                box-shadow: var(--shadow);
+                z-index: 1000;
+                transition: var(--transition);
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
         }
 
         // Initialize the app when DOM is loaded
