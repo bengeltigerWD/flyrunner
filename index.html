@@ -77,7 +77,6 @@
             border-radius: 4px;
             flex-shrink: 0;
             overflow: hidden;
-            background: white;
         }
 
         .logo-icon img {
@@ -707,20 +706,6 @@
         .btn-icon {
             font-size: 0.85rem;
         }
-        
-        /* Auto-save indicator */
-        .auto-save-indicator {
-            position: fixed;
-            bottom: 10px;
-            left: 10px;
-            background: var(--success);
-            color: white;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 10px;
-            z-index: 1000;
-            display: none;
-        }
     </style>
 </head>
 <body>
@@ -729,9 +714,6 @@
         <p>এই ওয়েবসাইটটি Chrome, Firefox, Safari, Opera এবং Edge ব্রাউজারে সেরাভাবে কাজ করে। অন্য ব্রাউজার ব্যবহার করলে কিছু সমস্যা হতে পারে।</p>
         <button class="close-warning" id="closeWarning">&times;</button>
     </div>
-
-    <!-- Auto-save indicator -->
-    <div class="auto-save-indicator" id="autoSaveIndicator">Auto-saved</div>
 
     <!-- Registration Modal (Shows First) -->
     <div id="registrationModal">
@@ -766,9 +748,9 @@
             <div class="logo">
                 <div class="logo-icon">
                     <!-- Logo space for your custom logo -->
-                    <span>⚡</span>
+                    <img src="flyrunnerlogo.jpg" alt="Logo" id="customLogo">
                 </div>
-                <h1>Fly Runner</h1>
+                <h1>Fly Runner </h1>
             </div>
             <div class="toolbar">
                 <button class="btn" id="newProjectBtn">
@@ -838,8 +820,7 @@
 
         <!-- Footer -->
         <footer>
-            Developed by Ajmir Ahmed — <a href="#" id="websiteLink">Visit Official Website</a><br> Created With AI Software - release date - 23.10.2025 ~ vr.1.1.1.1
-        </footer>
+            Developed by Ajmir Ahmed — <a href="#" id="websiteLink">Visit Official Website</a><br> Created With AI Software - release date - 23.10.2025 ~ vr.1.1.1.1        </footer>
 
         <!-- Projects Modal -->
         <div class="modal" id="projectsModal">
@@ -878,8 +859,7 @@
             theme: 'light',
             autoSave: true,
             registered: false,
-            currentTab: 'html',
-            lastSaveTime: null
+            currentTab: 'html'
         };
 
         // DOM Elements
@@ -896,9 +876,9 @@
         const offlineNotice = document.getElementById('offlineNotice');
         const editorTitle = document.getElementById('editorTitle');
         const tabs = document.querySelectorAll('.tab');
+        const customLogo = document.getElementById('customLogo');
         const browserWarning = document.getElementById('browserWarning');
         const closeWarning = document.getElementById('closeWarning');
-        const autoSaveIndicator = document.getElementById('autoSaveIndicator');
 
         // Buttons
         const signUpBtn = document.getElementById('signUpBtn');
@@ -981,12 +961,12 @@
             applyTheme();
             runCode();
             
-            // Auto-save every 10 seconds (reduced frequency)
+            // Auto-save every 5 seconds
             setInterval(() => {
                 if (state.autoSave && state.currentProject) {
-                    saveCurrentProject(true); // true means it's auto-save
+                    saveCurrentProject();
                 }
-            }, 10000);
+            }, 5000);
         }
 
         // Load app state from localStorage
@@ -1033,55 +1013,26 @@
             });
         }
 
-        // Insert symbol at cursor position in active editor - COMPLETELY FIXED
+        // Insert symbol at cursor position in active editor
         function insertSymbol(symbol) {
             const editor = getActiveEditor();
             const start = editor.selectionStart;
             const end = editor.selectionEnd;
             const text = editor.value;
             
-            // Insert the symbol
             editor.value = text.substring(0, start) + symbol + text.substring(end);
             editor.selectionStart = editor.selectionEnd = start + symbol.length;
             editor.focus();
             
-            // FIXED: For HTML editor when inserting '<' symbol, trigger auto-close
+            // Auto-close tags for HTML editor when using symbol bar
             if (symbol === '<' && state.currentTab === 'html') {
-                // Use a small delay to ensure the symbol is inserted first
                 setTimeout(() => {
                     const cursorPos = editor.selectionStart;
-                    const textBeforeCursor = editor.value.substring(0, cursorPos);
-                    
-                    // Find the last '<' we just inserted
-                    const lastOpenTagIndex = textBeforeCursor.lastIndexOf('<');
-                    
-                    if (lastOpenTagIndex !== -1) {
-                        const tagContent = textBeforeCursor.substring(lastOpenTagIndex);
-                        
-                        // Check if it's a valid opening tag (not closing tag)
-                        if (!tagContent.startsWith('</')) {
-                            // Wait for user to type tag name
-                            // We'll set up a listener for the next character input
-                            const handleNextInput = (e) => {
-                                if (e.inputType === 'insertText') {
-                                    const currentText = editor.value;
-                                    const currentCursor = editor.selectionStart;
-                                    const textBefore = currentText.substring(0, currentCursor);
-                                    
-                                    // Check if we have a complete tag name
-                                    const tagMatch = textBefore.match(/<([a-zA-Z][a-zA-Z0-9]*)$/);
-                                    if (tagMatch) {
-                                        const tagName = tagMatch[1];
-                                        // Auto-close the tag
-                                        autoCloseTag(editor, tagName, currentCursor);
-                                        // Remove this event listener
-                                        editor.removeEventListener('input', handleNextInput);
-                                    }
-                                }
-                            };
-                            
-                            editor.addEventListener('input', handleNextInput);
-                        }
+                    const beforeCursor = editor.value.substring(0, cursorPos);
+                    const tagMatch = beforeCursor.match(/<([a-zA-Z][a-zA-Z0-9]*)$/);
+                    if (tagMatch) {
+                        const tagName = tagMatch[1];
+                        autoCloseTag(editor, tagName);
                     }
                 }, 10);
             }
@@ -1097,11 +1048,11 @@
             }
         }
 
-        // Auto-close HTML tags - COMPLETELY FIXED VERSION
-        function autoCloseTag(editor, tagName, cursorPos) {
-            const text = editor.value;
-            const beforeCursor = text.substring(0, cursorPos);
-            const afterCursor = text.substring(cursorPos);
+        // Auto-close HTML tags on next line - FIXED VERSION
+        function autoCloseTag(editor, tagName) {
+            const cursorPos = editor.selectionStart;
+            const beforeCursor = editor.value.substring(0, cursorPos);
+            const afterCursor = editor.value.substring(cursorPos);
             
             // Get current line and its indentation
             const lines = beforeCursor.split('\n');
@@ -1110,10 +1061,10 @@
             const indent = indentMatch ? indentMatch[1] : '';
             
             // Insert closing tag on the next line with proper indentation
-            const closingTag = `\n${indent}</${tagName}>`;
-            editor.value = beforeCursor + closingTag + afterCursor;
+            const newText = beforeCursor + `\n${indent}</${tagName}>` + afterCursor;
+            editor.value = newText;
             
-            // Set cursor position between the opening and closing tags
+            // Set cursor position after the opening tag
             editor.selectionStart = editor.selectionEnd = cursorPos;
             editor.focus();
             
@@ -1143,7 +1094,7 @@
             
             // Button events
             newProjectBtn.addEventListener('click', showProjectsModal);
-            saveBtn.addEventListener('click', () => saveCurrentProject(false));
+            saveBtn.addEventListener('click', saveCurrentProject);
             openBtn.addEventListener('click', showProjectsModal);
             runBtn.addEventListener('click', runCode);
             themeToggle.addEventListener('click', toggleTheme);
@@ -1167,12 +1118,12 @@
             document.addEventListener('keydown', (e) => {
                 if ((e.ctrlKey || e.metaKey) && e.key === 's') {
                     e.preventDefault();
-                    saveCurrentProject(false);
+                    saveCurrentProject();
                 }
             });
         }
 
-        // Handle editor input for auto-closing tags (HTML only)
+        // Handle editor input for auto-closing tags (HTML only) - FIXED VERSION
         function handleEditorInput(e) {
             if (state.currentTab === 'html') {
                 const editor = e.target;
@@ -1195,7 +1146,7 @@
                                 const tagName = tagMatch[1];
                                 // Auto-close the tag on next line
                                 setTimeout(() => {
-                                    autoCloseTag(editor, tagName, cursorPos);
+                                    autoCloseTag(editor, tagName);
                                 }, 50);
                             }
                         }
@@ -1330,7 +1281,7 @@
             }
         }
 
-        // Handle registration
+        // Handle registration - COMPLETELY FIXED
         function handleRegistration() {
             console.log("Registration button clicked!");
             
@@ -1504,8 +1455,8 @@
             }
         }
 
-        // Save current project - FIXED AUTO-SAVE
-        function saveCurrentProject(isAutoSave = false) {
+        // Save current project
+        function saveCurrentProject() {
             if (state.currentProject) {
                 // Update existing project
                 const project = state.projects.find(p => p.id === state.currentProject);
@@ -1514,16 +1465,7 @@
                     project.css = cssEditor.value;
                     project.js = jsEditor.value;
                     saveProjects();
-                    
-                    if (isAutoSave) {
-                        // Show auto-save indicator instead of notification
-                        autoSaveIndicator.style.display = 'block';
-                        setTimeout(() => {
-                            autoSaveIndicator.style.display = 'none';
-                        }, 2000);
-                    } else {
-                        showNotification('Project saved!');
-                    }
+                    showNotification('Project saved!');
                 }
             } else {
                 // Create new project
