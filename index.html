@@ -1,208 +1,1139 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Smart HTML Studio</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{
-  font-family:'Poppins',sans-serif;
-  background:var(--bg);color:var(--text);
-  --bg:#f4f4f9;--text:#222;--panel:#fff;--accent:#0078ff;--border:#ccc;
-  transition:.3s;
-}
-body.dark{--bg:#1e1e1e;--text:#ddd;--panel:#2b2b2b;--border:#444}
-header{
-  display:flex;justify-content:space-between;align-items:center;
-  background:var(--panel);padding:8px 12px;border-bottom:1px solid var(--border);
-}
-header h1{font-size:1.1em}
-header button{
-  margin-left:6px;border:none;background:var(--accent);color:#fff;
-  padding:6px 10px;border-radius:5px;cursor:pointer;font-size:14px;
-}
-header button:hover{opacity:.85}
-#container{display:flex;flex-direction:row;height:calc(100vh - 130px);}
-#editor,#output{flex:1;margin:6px;border-radius:8px;overflow:hidden;border:1px solid var(--border);}
-#editor{display:flex;flex-direction:column;background:var(--panel);}
-#toolbar{
-  display:flex;flex-wrap:wrap;justify-content:center;gap:6px;
-  background:var(--panel);padding:6px;border-bottom:1px solid var(--border);
-  position:sticky;top:0;z-index:3;
-}
-#toolbar button{
-  background:var(--accent);color:white;border:none;border-radius:5px;
-  padding:4px 8px;font-size:16px;cursor:pointer;
-}
-#toolbar button:active{opacity:.7}
-#code{
-  flex:1;width:100%;border:none;outline:none;
-  background:transparent;color:var(--text);
-  font-family:monospace;font-size:14px;padding:10px;resize:none;
-}
-iframe{width:100%;height:100%;border:none;background:#fff;}
-footer{
-  text-align:center;padding:8px;font-size:.9em;background:var(--panel);
-  border-top:1px solid var(--border);
-}
-footer a{color:var(--accent);text-decoration:none;}
-footer a:hover{text-decoration:underline;}
-/* modal + register */
-#register,#modal{
-  position:fixed;inset:0;display:none;align-items:center;justify-content:center;
-  background:rgba(0,0,0,.6);z-index:999;
-}
-.register-box,.modal-content{
-  background:var(--panel);padding:20px;border-radius:10px;width:300px;max-width:90%;
-}
-.register-box input{
-  width:100%;margin:5px 0;padding:8px;border:1px solid var(--border);border-radius:5px;
-}
-.register-box button{
-  width:100%;padding:8px;margin-top:8px;background:var(--accent);
-  color:white;border:none;border-radius:5px;cursor:pointer;
-}
-.modal-content ul{list-style:none;padding:0;max-height:200px;overflow:auto;}
-.modal-content li{margin:4px 0;display:flex;justify-content:space-between;align-items:center;}
-.modal-content li button{background:red;color:#fff;border:none;border-radius:4px;padding:2px 6px;cursor:pointer;}
-@media(max-width:768px){
-  #container{flex-direction:column;}
-  #editor,#output{height:50%;margin:4px;}
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pesific HTML Runner</title>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a0ca3;
+            --secondary: #4cc9f0;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --border: #dee2e6;
+            --success: #4bb543;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        .dark-theme {
+            --primary: #4cc9f0;
+            --primary-dark: #4361ee;
+            --light: #121212;
+            --dark: #e9ecef;
+            --gray: #adb5bd;
+            --border: #343a40;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            transition: var(--transition);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 12px 20px;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            font-size: 1.8rem;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: var(--transition);
+            font-size: 14px;
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Symbol Bar */
+        .symbol-bar {
+            background-color: var(--light);
+            padding: 8px 15px;
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .symbol-btn {
+            background: var(--light);
+            border: 1px solid var(--border);
+            color: var(--dark);
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: monospace;
+            font-size: 16px;
+            min-width: 36px;
+            text-align: center;
+        }
+
+        .symbol-btn:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Main Content */
+        .container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .editor-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid var(--border);
+        }
+
+        .editor-tabs {
+            display: flex;
+            background-color: var(--light);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: var(--transition);
+        }
+
+        .tab.active {
+            border-bottom: 2px solid var(--primary);
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .editor-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .editor-header {
+            padding: 10px 15px;
+            background-color: var(--light);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .editor-header h2 {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .editor {
+            flex: 1;
+            padding: 15px;
+            background-color: var(--light);
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            line-height: 1.5;
+            border: none;
+            resize: none;
+            outline: none;
+            color: var(--dark);
+            tab-size: 4;
+            white-space: pre;
+            overflow: auto;
+        }
+
+        .preview-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .preview-header {
+            padding: 10px 15px;
+            background-color: var(--light);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .preview-header h2 {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .preview {
+            flex: 1;
+            border: none;
+            background-color: white;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--light);
+            padding: 15px 20px;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Modal Styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: var(--light);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: modalAppear 0.3s ease-out;
+        }
+
+        @keyframes modalAppear {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background-color: var(--light);
+            color: var(--dark);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
+        }
+
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: var(--border);
+            color: var(--dark);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--gray);
+            color: white;
+        }
+
+        /* Project List */
+        .project-list {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+        }
+
+        .project-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .project-item:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .project-item:last-child {
+            border-bottom: none;
+        }
+
+        .project-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--gray);
+            transition: var(--transition);
+            padding: 4px;
+            border-radius: 4px;
+        }
+
+        .action-btn:hover {
+            color: var(--primary);
+            background-color: rgba(67, 97, 238, 0.1);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .editor-panel {
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+                height: 60%;
+            }
+            
+            .preview-panel {
+                height: 40%;
+            }
+            
+            .toolbar {
+                gap: 5px;
+            }
+            
+            .btn span {
+                display: none;
+            }
+            
+            .logo h1 {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Offline Notice */
+        .offline-notice {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: var(--light);
+            border: 2px solid var(--primary);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            z-index: 2000;
+            text-align: center;
+            max-width: 90%;
+            display: none;
+        }
+
+        .offline-notice p {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+    </style>
 </head>
 <body>
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <div class="logo-icon">⚡</div>
+            <h1>Pesific HTML Runner</h1>
+        </div>
+        <div class="toolbar">
+            <button class="btn" id="newProjectBtn">
+                <span>➕</span>
+                <span>New</span>
+            </button>
+            <button class="btn" id="saveBtn">
+                <span>💾</span>
+                <span>Save</span>
+            </button>
+            <button class="btn" id="openBtn">
+                <span>📂</span>
+                <span>Open</span>
+            </button>
+            <button class="btn" id="runBtn">
+                <span>▶</span>
+                <span>Run</span>
+            </button>
+            <button class="btn" id="themeToggle">
+                <span>🌗</span>
+                <span>Theme</span>
+            </button>
+        </div>
+    </header>
 
-<div id="register">
-  <div class="register-box">
-    <h3>Sign Up</h3>
-    <input id="name" placeholder="Full Name">
-    <input id="email" type="email" placeholder="Email">
-    <input id="mobile" placeholder="Mobile Number">
-    <button id="signupBtn">Sign Up</button>
-  </div>
-</div>
-
-<header>
-  <h1>Smart HTML Studio</h1>
-  <div>
-    <button id="newBtn">➕</button>
-    <button id="openBtn">Open</button>
-    <button id="saveBtn">Save</button>
-    <button id="runBtn">Run</button>
-    <button id="themeBtn">🌗</button>
-  </div>
-</header>
-
-<div id="container">
-  <div id="editor">
-    <div id="toolbar">
-      <button data-insert="<">&lt;</button>
-      <button data-insert=">">&gt;</button>
-      <button data-insert="/">&sol;</button>
-      <button data-insert="=">=</button>
-      <button data-insert='"'>&quot;</button>
-      <button data-insert="'">'</button>
-      <button data-insert="{">{</button>
-      <button data-insert="}">}</button>
-      <button data-insert="(">(</button>
-      <button data-insert=")">)</button>
-      <button data-insert=";">;</button>
+    <!-- Symbol Bar -->
+    <div class="symbol-bar" id="symbolBar">
+        <!-- Symbols will be added via JavaScript -->
     </div>
-    <textarea id="code" placeholder="Write your HTML, CSS, JS here..."></textarea>
-  </div>
-  <div id="output"><iframe id="preview"></iframe></div>
-</div>
 
-<footer>
-  Developed by Ajmir Ahmed — <a href="https://example.com" target="_blank">Visit Website</a>
-</footer>
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Editor Panel -->
+        <div class="editor-panel">
+            <div class="editor-tabs">
+                <div class="tab active" data-tab="html">HTML</div>
+                <div class="tab" data-tab="css">CSS</div>
+                <div class="tab" data-tab="js">JavaScript</div>
+            </div>
+            <div class="editor-container">
+                <div class="editor-header">
+                    <h2 id="editorTitle">HTML Editor</h2>
+                    <div>
+                        <button class="btn-secondary" id="clearBtn">Clear</button>
+                    </div>
+                </div>
+                <textarea class="editor" id="htmlEditor" placeholder="Write your HTML code here..."></textarea>
+                <textarea class="editor" id="cssEditor" placeholder="Write your CSS code here..." style="display: none;"></textarea>
+                <textarea class="editor" id="jsEditor" placeholder="Write your JavaScript code here..." style="display: none;"></textarea>
+            </div>
+        </div>
 
-<div id="modal">
-  <div class="modal-content">
-    <h3>Saved Projects</h3>
-    <ul id="projectList"></ul>
-    <button onclick="closeModal()">Close</button>
-  </div>
-</div>
+        <!-- Preview Panel -->
+        <div class="preview-panel">
+            <div class="preview-header">
+                <h2>Live Preview</h2>
+                <div>
+                    <button class="btn-secondary" id="refreshBtn">Refresh</button>
+                </div>
+            </div>
+            <iframe class="preview" id="previewFrame"></iframe>
+        </div>
+    </div>
 
-<script>
-// Registration
-const regBox=document.getElementById('register');
-if(!localStorage.getItem('registered'))regBox.style.display='flex';
-document.getElementById('signupBtn').onclick=()=>{
- let n=name.value.trim(),e=email.value.trim(),m=mobile.value.trim();
- if(!n||!e||!m)return alert('All fields required');
- fetch('https://formspree.io/f/xleqzeen',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:n,email:e,mobile:m})})
- .finally(()=>{localStorage.setItem('registered','true');regBox.style.display='none';alert('Registered successfully!');});
-};
+    <!-- Footer -->
+    <footer>
+        Developed by Ajmir Ahmed — <a href="#" id="websiteLink">Visit Website</a>
+    </footer>
 
-// Elements
-const txt=document.getElementById('code'),frame=document.getElementById('preview');
-let current=null;
+    <!-- Registration Modal -->
+    <div class="modal" id="registrationModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Welcome to Pesific HTML Runner</h2>
+                <button class="close-btn" id="closeRegistration">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Please register to get started with Pesific HTML Runner</p>
+                <form id="registrationForm" action="https://formspree.io/f/myznnpba" method="POST">
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" id="fullName" name="name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="mobile">Mobile Number</label>
+                        <input type="tel" id="mobile" name="mobile" class="form-control" required>
+                    </div>
+                    <input type="hidden" name="_subject" value="New Registration - Pesific HTML Runner">
+                    <input type="hidden" name="_format" value="plain">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-primary" id="signUpBtn">Sign Up</button>
+            </div>
+        </div>
+    </div>
 
-// Run Code
-const run=()=>frame.srcdoc=txt.value;
-document.getElementById('runBtn').onclick=run;
+    <!-- Projects Modal -->
+    <div class="modal" id="projectsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Your Projects</h2>
+                <button class="close-btn" id="closeProjects">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <input type="text" id="projectName" class="form-control" placeholder="Enter project name">
+                </div>
+                <div class="project-list" id="projectList">
+                    <!-- Projects will be loaded here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="cancelProjects">Cancel</button>
+                <button class="btn-primary" id="saveProjectBtn">Save Project</button>
+            </div>
+        </div>
+    </div>
 
-// Auto close tag
-txt.addEventListener('input',e=>{
- if(e.data==='>'){
-   const m=txt.value.match(/<(\w+)>$/);
-   if(m){txt.value+=`</${m[1]}>`;}
- }
-});
+    <!-- Offline Notice -->
+    <div class="offline-notice" id="offlineNotice">
+        <p>আপনি বর্তমানে অফলাইনে আছেন, দয়া করে ওয়েবসাইটটি রিলোড করবেন না।</p>
+        <button class="btn-primary" id="okOfflineBtn">OK</button>
+    </div>
 
-// Toolbar insert
-document.querySelectorAll('#toolbar button').forEach(btn=>{
- btn.onclick=()=>{
-   const val=btn.getAttribute('data-insert');
-   const start=txt.selectionStart,end=txt.selectionEnd;
-   txt.value=txt.value.substring(0,start)+val+txt.value.substring(end);
-   txt.selectionStart=txt.selectionEnd=start+val.length;
-   txt.focus();
- };
-});
+    <script>
+        // App State
+        const state = {
+            currentProject: null,
+            projects: [],
+            theme: 'light',
+            autoSave: true,
+            registered: false,
+            currentTab: 'html'
+        };
 
-// Projects
-function save(){
- const name=current||prompt('Project name:');
- if(!name)return;
- localStorage.setItem('proj_'+name,txt.value);current=name;alert('Saved!');
-}
-function load(name){
- txt.value=localStorage.getItem('proj_'+name)||'';current=name;closeModal();
-}
-function del(name){
- if(confirm('Delete project?')){localStorage.removeItem('proj_'+name);openModal();}
-}
-function newP(){if(confirm('Clear current code?')){txt.value='';current=null;}}
-function openModal(){
- const list=document.getElementById('projectList');list.innerHTML='';
- Object.keys(localStorage).forEach(k=>{
-  if(k.startsWith('proj_')){
-   const n=k.replace('proj_','');
-   const li=document.createElement('li');
-   li.innerHTML=`<span>${n}</span>
-    <div><button onclick="load('${n}')">Open</button>
-    <button onclick="del('${n}')">❌</button></div>`;
-   list.appendChild(li);
-  }
- });
- document.getElementById('modal').style.display='flex';
-}
-function closeModal(){document.getElementById('modal').style.display='none';}
-document.getElementById('saveBtn').onclick=save;
-document.getElementById('openBtn').onclick=openModal;
-document.getElementById('newBtn').onclick=newP;
+        // DOM Elements
+        const htmlEditor = document.getElementById('htmlEditor');
+        const cssEditor = document.getElementById('cssEditor');
+        const jsEditor = document.getElementById('jsEditor');
+        const previewFrame = document.getElementById('previewFrame');
+        const symbolBar = document.getElementById('symbolBar');
+        const registrationModal = document.getElementById('registrationModal');
+        const projectsModal = document.getElementById('projectsModal');
+        const projectList = document.getElementById('projectList');
+        const projectNameInput = document.getElementById('projectName');
+        const offlineNotice = document.getElementById('offlineNotice');
+        const editorTitle = document.getElementById('editorTitle');
+        const tabs = document.querySelectorAll('.tab');
 
-// Theme
-document.getElementById('themeBtn').onclick=()=>{
- document.body.classList.toggle('dark');
- localStorage.setItem('theme',document.body.classList.contains('dark')?'dark':'light');
-};
-if(localStorage.getItem('theme')==='dark')document.body.classList.add('dark');
-</script>
+        // Buttons
+        const newProjectBtn = document.getElementById('newProjectBtn');
+        const saveBtn = document.getElementById('saveBtn');
+        const openBtn = document.getElementById('openBtn');
+        const runBtn = document.getElementById('runBtn');
+        const themeToggle = document.getElementById('themeToggle');
+        const clearBtn = document.getElementById('clearBtn');
+        const refreshBtn = document.getElementById('refreshBtn');
+        const signUpBtn = document.getElementById('signUpBtn');
+        const closeRegistration = document.getElementById('closeRegistration');
+        const closeProjects = document.getElementById('closeProjects');
+        const cancelProjects = document.getElementById('cancelProjects');
+        const saveProjectBtn = document.getElementById('saveProjectBtn');
+        const websiteLink = document.getElementById('websiteLink');
+        const okOfflineBtn = document.getElementById('okOfflineBtn');
+
+        // Initialize the app
+        function init() {
+            loadState();
+            setupSymbolBar();
+            setupEventListeners();
+            checkRegistration();
+            setupOfflineDetection();
+            applyTheme();
+            runCode(); // Run initial empty code to set up iframe
+            
+            // Auto-save every 5 seconds
+            setInterval(() => {
+                if (state.autoSave && state.currentProject) {
+                    saveCurrentProject();
+                }
+            }, 5000);
+        }
+
+        // Load app state from localStorage
+        function loadState() {
+            const savedState = localStorage.getItem('pesificHtmlRunnerState');
+            if (savedState) {
+                const parsed = JSON.parse(savedState);
+                Object.assign(state, parsed);
+            }
+            
+            // Load projects
+            const savedProjects = localStorage.getItem('pesificHtmlRunnerProjects');
+            if (savedProjects) {
+                state.projects = JSON.parse(savedProjects);
+            }
+            
+            // Load current project if any
+            if (state.currentProject) {
+                const project = state.projects.find(p => p.id === state.currentProject);
+                if (project) {
+                    htmlEditor.value = project.html || '';
+                    cssEditor.value = project.css || '';
+                    jsEditor.value = project.js || '';
+                }
+            }
+        }
+
+        // Save app state to localStorage
+        function saveState() {
+            localStorage.setItem('pesificHtmlRunnerState', JSON.stringify(state));
+        }
+
+        // Setup symbol bar with common programming symbols
+        function setupSymbolBar() {
+            const symbols = ['<', '>', '/', '"', "'", '{', '}', '(', ')', '[', ']', ';', ':', '=', '&', '#', '$', '%', '@', '!', '?', '+', '-', '*', '|', '\\'];
+            
+            symbols.forEach(symbol => {
+                const button = document.createElement('button');
+                button.className = 'symbol-btn';
+                button.textContent = symbol;
+                button.addEventListener('click', () => insertSymbol(symbol));
+                symbolBar.appendChild(button);
+            });
+        }
+
+        // Insert symbol at cursor position in active editor
+        function insertSymbol(symbol) {
+            const editor = getActiveEditor();
+            const start = editor.selectionStart;
+            const end = editor.selectionEnd;
+            const text = editor.value;
+            
+            editor.value = text.substring(0, start) + symbol + text.substring(end);
+            editor.selectionStart = editor.selectionEnd = start + symbol.length;
+            editor.focus();
+            
+            // Auto-close tags for HTML editor
+            if (symbol === '<' && state.currentTab === 'html') {
+                setTimeout(() => {
+                    autoCloseTag(editor);
+                }, 10);
+            }
+        }
+
+        // Get the currently active editor
+        function getActiveEditor() {
+            switch(state.currentTab) {
+                case 'html': return htmlEditor;
+                case 'css': return cssEditor;
+                case 'js': return jsEditor;
+                default: return htmlEditor;
+            }
+        }
+
+        // Auto-close HTML tags on next line
+        function autoCloseTag(editor) {
+            const cursorPos = editor.selectionStart;
+            const beforeCursor = editor.value.substring(0, cursorPos);
+            const afterCursor = editor.value.substring(cursorPos);
+            
+            // Check if we're at the start of a new tag
+            const lastOpenTag = beforeCursor.lastIndexOf('<');
+            const lastCloseTag = beforeCursor.lastIndexOf('>');
+            
+            if (lastOpenTag > lastCloseTag) {
+                // We're inside a tag, check if it's a closing tag
+                const tagContent = beforeCursor.substring(lastOpenTag);
+                if (!tagContent.startsWith('</') && !tagContent.includes('/>')) {
+                    // It's an opening tag, find the tag name
+                    const tagMatch = tagContent.match(/<([a-zA-Z][a-zA-Z0-9]*)/);
+                    if (tagMatch) {
+                        const tagName = tagMatch[1];
+                        // Insert closing tag on the next line with proper indentation
+                        const lines = beforeCursor.split('\n');
+                        const currentLine = lines[lines.length - 1];
+                        const indentMatch = currentLine.match(/^(\s*)/);
+                        const indent = indentMatch ? indentMatch[1] : '';
+                        
+                        editor.value = beforeCursor + `>\n${indent}</${tagName}>` + afterCursor;
+                        editor.selectionStart = editor.selectionEnd = cursorPos + 1;
+                    }
+                }
+            }
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Editor events
+            htmlEditor.addEventListener('input', handleEditorInput);
+            cssEditor.addEventListener('input', handleEditorInput);
+            jsEditor.addEventListener('input', handleEditorInput);
+            
+            htmlEditor.addEventListener('keydown', handleKeydown);
+            cssEditor.addEventListener('keydown', handleKeydown);
+            jsEditor.addEventListener('keydown', handleKeydown);
+            
+            // Tab events
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabName = tab.getAttribute('data-tab');
+                    switchTab(tabName);
+                });
+            });
+            
+            // Button events
+            newProjectBtn.addEventListener('click', showProjectsModal);
+            saveBtn.addEventListener('click', saveCurrentProject);
+            openBtn.addEventListener('click', showProjectsModal);
+            runBtn.addEventListener('click', runCode);
+            themeToggle.addEventListener('click', toggleTheme);
+            clearBtn.addEventListener('click', clearEditor);
+            refreshBtn.addEventListener('click', runCode);
+            
+            // Modal events
+            signUpBtn.addEventListener('click', handleRegistration);
+            closeRegistration.addEventListener('click', () => registrationModal.style.display = 'none');
+            closeProjects.addEventListener('click', () => projectsModal.style.display = 'none');
+            cancelProjects.addEventListener('click', () => projectsModal.style.display = 'none');
+            saveProjectBtn.addEventListener('click', saveProject);
+            okOfflineBtn.addEventListener('click', () => offlineNotice.style.display = 'none');
+            
+            // Website link
+            websiteLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                alert('Website would open here in a real implementation');
+            });
+            
+            // Keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                if (e.ctrlKey || e.metaKey) {
+                    if (e.key === 's') {
+                        e.preventDefault();
+                        saveCurrentProject();
+                    } else if (e.key === 'r') {
+                        e.preventDefault();
+                        runCode();
+                    }
+                }
+            });
+        }
+
+        // Handle editor input for auto-closing tags (HTML only)
+        function handleEditorInput(e) {
+            if (state.currentTab === 'html' && e.inputType === 'insertText' && e.data === '<') {
+                setTimeout(() => {
+                    autoCloseTag(e.target);
+                }, 10);
+            }
+        }
+
+        // Handle keydown events for auto-indentation
+        function handleKeydown(e) {
+            if (e.key === 'Tab') {
+                e.preventDefault();
+                const editor = e.target;
+                const start = editor.selectionStart;
+                const end = editor.selectionEnd;
+                
+                // Insert tab at cursor position
+                editor.value = editor.value.substring(0, start) + '    ' + editor.value.substring(end);
+                editor.selectionStart = editor.selectionEnd = start + 4;
+            } else if (e.key === 'Enter') {
+                // Auto-indent on new line
+                const editor = e.target;
+                const start = editor.selectionStart;
+                const textBefore = editor.value.substring(0, start);
+                const lines = textBefore.split('\n');
+                const currentLine = lines[lines.length - 1];
+                
+                // Count leading spaces/tabs
+                const indentMatch = currentLine.match(/^(\s*)/);
+                if (indentMatch) {
+                    const indent = indentMatch[1];
+                    setTimeout(() => {
+                        const cursorPos = editor.selectionStart;
+                        editor.value = editor.value.substring(0, cursorPos) + indent + editor.value.substring(cursorPos);
+                        editor.selectionStart = editor.selectionEnd = cursorPos + indent.length;
+                    }, 0);
+                }
+            }
+        }
+
+        // Switch between HTML, CSS, and JS tabs
+        function switchTab(tabName) {
+            state.currentTab = tabName;
+            
+            // Update active tab UI
+            tabs.forEach(tab => {
+                if (tab.getAttribute('data-tab') === tabName) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
+            
+            // Show/hide editors
+            htmlEditor.style.display = tabName === 'html' ? 'block' : 'none';
+            cssEditor.style.display = tabName === 'css' ? 'block' : 'none';
+            jsEditor.style.display = tabName === 'js' ? 'block' : 'none';
+            
+            // Update editor title
+            editorTitle.textContent = `${tabName.toUpperCase()} Editor`;
+        }
+
+        // Run code in preview iframe
+        function runCode() {
+            const html = htmlEditor.value;
+            const css = cssEditor.value;
+            const js = jsEditor.value;
+            const iframeDoc = previewFrame.contentDocument || previewFrame.contentWindow.document;
+            
+            iframeDoc.open();
+            iframeDoc.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <style>
+                        body { 
+                            font-family: Arial, sans-serif; 
+                            padding: 20px;
+                            margin: 0;
+                        }
+                        ${css}
+                    </style>
+                </head>
+                <body>
+                    ${html || '<p>Write some HTML to see the preview here.</p>'}
+                    <script>
+                        ${js}
+                    <\/script>
+                </body>
+                </html>
+            `);
+            iframeDoc.close();
+        }
+
+        // Toggle between light and dark theme
+        function toggleTheme() {
+            state.theme = state.theme === 'light' ? 'dark' : 'light';
+            applyTheme();
+            saveState();
+        }
+
+        // Apply current theme
+        function applyTheme() {
+            if (state.theme === 'dark') {
+                document.body.classList.add('dark-theme');
+            } else {
+                document.body.classList.remove('dark-theme');
+            }
+        }
+
+        // Clear active editor
+        function clearEditor() {
+            const editor = getActiveEditor();
+            if (confirm('Are you sure you want to clear the editor? Any unsaved changes will be lost.')) {
+                editor.value = '';
+            }
+        }
+
+        // Check if user is registered
+        function checkRegistration() {
+            if (!state.registered) {
+                registrationModal.style.display = 'flex';
+            }
+        }
+
+        // Handle registration
+        function handleRegistration() {
+            const fullName = document.getElementById('fullName').value;
+            const email = document.getElementById('email').value;
+            const mobile = document.getElementById('mobile').value;
+            
+            if (!fullName || !email || !mobile) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            // Submit form to Formspree
+            const form = document.getElementById('registrationForm');
+            const formData = new FormData(form);
+            
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    state.registered = true;
+                    saveState();
+                    registrationModal.style.display = 'none';
+                    alert('Registration successful! Welcome to Pesific HTML Runner.');
+                } else {
+                    alert('There was an error with your registration. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Even if submission fails, mark as registered to not show form again
+                state.registered = true;
+                saveState();
+                registrationModal.style.display = 'none';
+                alert('Registration submitted! Welcome to Pesific HTML Runner.');
+            });
+        }
+
+        // Setup offline detection
+        function setupOfflineDetection() {
+            window.addEventListener('online', () => {
+                // Hide offline notice if visible
+                offlineNotice.style.display = 'none';
+            });
+            
+            window.addEventListener('offline', () => {
+                // Show offline notice in Bengali
+                offlineNotice.style.display = 'block';
+            });
+            
+            // Check initial status
+            if (!navigator.onLine) {
+                offlineNotice.style.display = 'block';
+            }
+        }
+
+        // Show projects modal
+        function showProjectsModal() {
+            loadProjectsList();
+            projectsModal.style.display = 'flex';
+        }
+
+        // Load projects into the list
+        function loadProjectsList() {
+            projectList.innerHTML = '';
+            
+            if (state.projects.length === 0) {
+                projectList.innerHTML = '<div class="project-item">No projects yet. Create your first project!</div>';
+                return;
+            }
+            
+            state.projects.forEach(project => {
+                const projectItem = document.createElement('div');
+                projectItem.className = 'project-item';
+                projectItem.innerHTML = `
+                    <span>${project.name}</span>
+                    <div class="project-actions">
+                        <button class="action-btn" data-action="open" data-id="${project.id}">📂</button>
+                        <button class="action-btn" data-action="rename" data-id="${project.id}">✏️</button>
+                        <button class="action-btn" data-action="delete" data-id="${project.id}">🗑️</button>
+                    </div>
+                `;
+                projectList.appendChild(projectItem);
+            });
+            
+            // Add event listeners to action buttons
+            document.querySelectorAll('.action-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const action = e.target.getAttribute('data-action');
+                    const id = e.target.getAttribute('data-id');
+                    handleProjectAction(action, id);
+                });
+            });
+        }
+
+        // Handle project actions (open, rename, delete)
+        function handleProjectAction(action, id) {
+            const project = state.projects.find(p => p.id === id);
+            
+            switch (action) {
+                case 'open':
+                    htmlEditor.value = project.html || '';
+                    cssEditor.value = project.css || '';
+                    jsEditor.value = project.js || '';
+                    state.currentProject = project.id;
+                    saveState();
+                    projectsModal.style.display = 'none';
+                    runCode();
+                    break;
+                case 'rename':
+                    const newName = prompt('Enter new project name:', project.name);
+                    if (newName && newName.trim() !== '') {
+                        project.name = newName.trim();
+                        saveProjects();
+                        loadProjectsList();
+                    }
+                    break;
+                case 'delete':
+                    if (confirm(`Are you sure you want to delete "${project.name}"?`)) {
+                        state.projects = state.projects.filter(p => p.id !== id);
+                        if (state.currentProject === id) {
+                            state.currentProject = null;
+                        }
+                        saveProjects();
+                        saveState();
+                        loadProjectsList();
+                    }
+                    break;
+            }
+        }
+
+        // Save current project
+        function saveCurrentProject() {
+            if (state.currentProject) {
+                // Update existing project
+                const project = state.projects.find(p => p.id === state.currentProject);
+                if (project) {
+                    project.html = htmlEditor.value;
+                    project.css = cssEditor.value;
+                    project.js = jsEditor.value;
+                    saveProjects();
+                }
+            } else {
+                // Create new project
+                showProjectsModal();
+            }
+        }
+
+        // Save project with name
+        function saveProject() {
+            const name = projectNameInput.value.trim();
+            if (!name) {
+                alert('Please enter a project name');
+                return;
+            }
+            
+            const id = 'project_' + Date.now();
+            
+            state.projects.push({
+                id,
+                name,
+                html: htmlEditor.value,
+                css: cssEditor.value,
+                js: jsEditor.value,
+                created: new Date().toISOString()
+            });
+            
+            state.currentProject = id;
+            saveProjects();
+            saveState();
+            projectsModal.style.display = 'none';
+            projectNameInput.value = '';
+        }
+
+        // Save projects to localStorage
+        function saveProjects() {
+            localStorage.setItem('pesificHtmlRunnerProjects', JSON.stringify(state.projects));
+        }
+
+        // Initialize the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
 </body>
 </html>
