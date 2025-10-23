@@ -51,48 +51,48 @@
         header {
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
-            padding: 6px 10px;
+            padding: 6px 8px;
             box-shadow: var(--shadow);
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 100;
-            min-height: 45px;
+            min-height: 42px;
             flex-shrink: 0;
         }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
             flex-shrink: 0;
         }
 
         .logo-icon {
-            font-size: 1.1rem;
-            width: 26px;
-            height: 26px;
+            font-size: 1rem;
+            width: 24px;
+            height: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
             background: rgba(255, 255, 255, 0.2);
-            border-radius: 5px;
+            border-radius: 4px;
             flex-shrink: 0;
         }
 
         .logo h1 {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 600;
             white-space: nowrap;
         }
 
         .toolbar {
             display: flex;
-            gap: 3px;
+            gap: 2px;
             flex-shrink: 0;
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
-            padding: 2px 0;
+            padding: 1px 0;
         }
 
         .toolbar::-webkit-scrollbar {
@@ -103,18 +103,18 @@
             background: rgba(255, 255, 255, 0.2);
             border: none;
             color: white;
-            padding: 4px 6px;
-            border-radius: 5px;
+            padding: 3px 5px;
+            border-radius: 4px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: var(--transition);
-            font-size: 10px;
+            font-size: 9px;
             white-space: nowrap;
             flex-shrink: 0;
-            min-width: 34px;
-            height: 28px;
+            min-width: 30px;
+            height: 26px;
         }
 
         .btn:active {
@@ -125,15 +125,15 @@
         /* Symbol Bar */
         .symbol-bar {
             background-color: var(--light);
-            padding: 5px 6px;
+            padding: 4px 5px;
             display: flex;
-            gap: 3px;
+            gap: 2px;
             overflow-x: auto;
             border-bottom: 1px solid var(--border);
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
             -webkit-overflow-scrolling: touch;
             flex-shrink: 0;
-            min-height: 36px;
+            min-height: 34px;
         }
 
         .symbol-bar::-webkit-scrollbar {
@@ -144,16 +144,16 @@
             background: var(--light);
             border: 1px solid var(--border);
             color: var(--dark);
-            padding: 4px 6px;
-            border-radius: 4px;
+            padding: 3px 5px;
+            border-radius: 3px;
             cursor: pointer;
             transition: var(--transition);
             font-family: monospace;
-            font-size: 12px;
-            min-width: 26px;
+            font-size: 11px;
+            min-width: 24px;
             text-align: center;
             flex-shrink: 0;
-            height: 28px;
+            height: 26px;
         }
 
         .symbol-btn:active {
@@ -192,13 +192,13 @@
         }
 
         .tab {
-            padding: 6px 12px;
+            padding: 5px 10px;
             cursor: pointer;
             border-bottom: 2px solid transparent;
             transition: var(--transition);
             white-space: nowrap;
             flex-shrink: 0;
-            font-size: 12px;
+            font-size: 11px;
         }
 
         .tab.active {
@@ -216,7 +216,7 @@
         }
 
         .editor-header {
-            padding: 6px 10px;
+            padding: 5px 8px;
             background-color: var(--light);
             border-bottom: 1px solid var(--border);
             display: flex;
@@ -226,13 +226,13 @@
         }
 
         .editor-header h2 {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 500;
         }
 
         .editor {
             flex: 1;
-            padding: 10px;
+            padding: 8px;
             background-color: var(--light);
             font-family: 'Courier New', monospace;
             font-size: 14px;
@@ -256,7 +256,7 @@
         }
 
         .preview-header {
-            padding: 6px 10px;
+            padding: 5px 8px;
             background-color: var(--light);
             border-bottom: 1px solid var(--border);
             display: flex;
@@ -266,7 +266,7 @@
         }
 
         .preview-header h2 {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 500;
         }
 
@@ -280,10 +280,10 @@
         /* Mobile Run Button */
         .mobile-run-btn {
             position: fixed;
-            bottom: 60px;
-            right: 12px;
-            width: 45px;
-            height: 45px;
+            bottom: 55px;
+            right: 10px;
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
@@ -293,7 +293,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.1rem;
+            font-size: 1rem;
             z-index: 1000;
             transition: var(--transition);
         }
@@ -305,10 +305,10 @@
         /* Footer */
         footer {
             background-color: var(--light);
-            padding: 6px 10px;
+            padding: 5px 8px;
             text-align: center;
             border-top: 1px solid var(--border);
-            font-size: 10px;
+            font-size: 9px;
             color: var(--gray);
             flex-shrink: 0;
         }
@@ -331,61 +331,61 @@
             justify-content: center;
             align-items: center;
             z-index: 3000;
-            padding: 15px;
+            padding: 12px;
         }
 
         .registration-content {
             background: white;
-            border-radius: 12px;
-            padding: 20px;
+            border-radius: 10px;
+            padding: 18px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             width: 100%;
-            max-width: 380px;
+            max-width: 360px;
             text-align: center;
         }
 
         .registration-header {
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .registration-header h2 {
             color: var(--primary-dark);
-            font-size: 1.3rem;
-            margin-bottom: 6px;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
         }
 
         .registration-header p {
             color: var(--gray);
-            font-size: 0.8rem;
+            font-size: 0.75rem;
         }
 
         .registration-icon {
-            font-size: 2.5rem;
-            margin-bottom: 12px;
+            font-size: 2.2rem;
+            margin-bottom: 10px;
             color: var(--primary);
         }
 
         .form-group {
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             text-align: left;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
             font-weight: 500;
             color: var(--dark);
-            font-size: 13px;
+            font-size: 12px;
         }
 
         .form-control {
             width: 100%;
-            padding: 10px 12px;
+            padding: 8px 10px;
             border: 2px solid var(--border);
-            border-radius: 8px;
+            border-radius: 6px;
             background-color: white;
             color: var(--dark);
-            font-size: 14px;
+            font-size: 13px;
             transition: var(--transition);
         }
 
@@ -399,14 +399,14 @@
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
             border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
+            padding: 10px 20px;
+            border-radius: 6px;
             cursor: pointer;
             font-weight: 600;
             transition: var(--transition);
-            font-size: 14px;
+            font-size: 13px;
             width: 100%;
-            margin-top: 8px;
+            margin-top: 6px;
         }
 
         .btn-register:active {
@@ -426,15 +426,15 @@
             justify-content: center;
             align-items: center;
             z-index: 2000;
-            padding: 12px;
+            padding: 10px;
         }
 
         .modal-content {
             background-color: var(--light);
-            border-radius: 10px;
+            border-radius: 8px;
             box-shadow: var(--shadow);
             width: 100%;
-            max-width: 380px;
+            max-width: 360px;
             max-height: 80vh;
             overflow-y: auto;
             animation: modalAppear 0.3s ease-out;
@@ -452,7 +452,7 @@
         }
 
         .modal-header {
-            padding: 12px 16px;
+            padding: 10px 14px;
             border-bottom: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
@@ -460,47 +460,47 @@
         }
 
         .modal-header h2 {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 600;
         }
 
         .close-btn {
             background: none;
             border: none;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             cursor: pointer;
             color: var(--gray);
             padding: 0;
-            width: 28px;
-            height: 28px;
+            width: 26px;
+            height: 26px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
         .modal-body {
-            padding: 16px;
+            padding: 14px;
         }
 
         .modal-footer {
-            padding: 12px 16px;
+            padding: 10px 14px;
             border-top: 1px solid var(--border);
             display: flex;
             justify-content: flex-end;
-            gap: 8px;
+            gap: 6px;
         }
 
         .btn-primary {
             background-color: var(--primary);
             color: white;
             border: none;
-            padding: 10px 16px;
-            border-radius: 6px;
+            padding: 8px 14px;
+            border-radius: 5px;
             cursor: pointer;
             font-weight: 500;
             transition: var(--transition);
-            font-size: 14px;
-            min-width: 80px;
+            font-size: 13px;
+            min-width: 70px;
         }
 
         .btn-primary:active {
@@ -512,13 +512,13 @@
             background-color: var(--border);
             color: var(--dark);
             border: none;
-            padding: 10px 16px;
-            border-radius: 6px;
+            padding: 8px 14px;
+            border-radius: 5px;
             cursor: pointer;
             font-weight: 500;
             transition: var(--transition);
-            font-size: 14px;
-            min-width: 70px;
+            font-size: 13px;
+            min-width: 60px;
         }
 
         .btn-secondary:active {
@@ -529,15 +529,15 @@
 
         /* Project List */
         .project-list {
-            max-height: 180px;
+            max-height: 160px;
             overflow-y: auto;
             border: 1px solid var(--border);
-            border-radius: 6px;
+            border-radius: 5px;
             -webkit-overflow-scrolling: touch;
         }
 
         .project-item {
-            padding: 10px 12px;
+            padding: 8px 10px;
             border-bottom: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
@@ -556,7 +556,7 @@
 
         .project-actions {
             display: flex;
-            gap: 6px;
+            gap: 5px;
         }
 
         .action-btn {
@@ -565,9 +565,9 @@
             cursor: pointer;
             color: var(--gray);
             transition: var(--transition);
-            padding: 5px;
-            border-radius: 4px;
-            font-size: 14px;
+            padding: 4px;
+            border-radius: 3px;
+            font-size: 13px;
         }
 
         .action-btn:active {
@@ -584,8 +584,8 @@
             transform: translate(-50%, -50%);
             background-color: var(--light);
             border: 2px solid var(--primary);
-            border-radius: 10px;
-            padding: 16px;
+            border-radius: 8px;
+            padding: 14px;
             box-shadow: var(--shadow);
             z-index: 3000;
             text-align: center;
@@ -594,25 +594,25 @@
         }
 
         .offline-notice p {
-            margin-bottom: 12px;
-            font-size: 14px;
+            margin-bottom: 10px;
+            font-size: 13px;
             line-height: 1.4;
         }
 
         /* Notification */
         .notification {
             position: fixed;
-            top: 15px;
-            right: 15px;
+            top: 12px;
+            right: 12px;
             background: var(--primary);
             color: white;
-            padding: 10px 16px;
-            border-radius: 6px;
+            padding: 8px 14px;
+            border-radius: 5px;
             box-shadow: var(--shadow);
             z-index: 4000;
             transition: var(--transition);
-            max-width: 280px;
-            font-size: 13px;
+            max-width: 260px;
+            font-size: 12px;
         }
 
         /* Hide scrollbars but keep functionality */
@@ -630,44 +630,44 @@
             }
             
             .btn {
-                padding: 4px;
-                min-width: 32px;
-                height: 26px;
+                padding: 3px;
+                min-width: 28px;
+                height: 24px;
             }
             
             .logo h1 {
-                font-size: 0.85rem;
+                font-size: 0.8rem;
             }
             
             .editor {
                 font-size: 16px;
-                padding: 8px;
+                padding: 6px;
             }
             
             .symbol-bar {
-                padding: 4px;
+                padding: 3px;
             }
             
             .symbol-btn {
-                min-width: 24px;
-                padding: 3px 5px;
-                font-size: 11px;
-                height: 26px;
+                min-width: 22px;
+                padding: 2px 4px;
+                font-size: 10px;
+                height: 24px;
             }
 
             .registration-content {
-                padding: 16px;
-                margin: 8px;
+                padding: 14px;
+                margin: 6px;
             }
 
             .registration-header h2 {
-                font-size: 1.2rem;
+                font-size: 1.1rem;
             }
         }
 
         /* Button icons */
         .btn-icon {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
     </style>
 </head>
@@ -680,10 +680,7 @@
                 <h2>Pesific HTML Runner</h2>
                 <p>Create, edit and preview HTML/CSS/JS code</p>
             </div>
-            <form id="registrationForm" action="https://formspree.io/f/myznnpba" method="POST">
-                <input type="hidden" name="_subject" value="New Registration - Pesific HTML Runner">
-                <input type="hidden" name="_format" value="plain">
-                
+            <form id="registrationForm">
                 <div class="form-group">
                     <label for="fullName">Full Name *</label>
                     <input type="text" id="fullName" name="name" class="form-control" required placeholder="Enter your full name">
@@ -696,7 +693,7 @@
                     <label for="mobile">Mobile Number *</label>
                     <input type="tel" id="mobile" name="mobile" class="form-control" required placeholder="Enter your mobile number">
                 </div>
-                <button type="submit" class="btn-register" id="signUpBtn">
+                <button type="button" class="btn-register" id="signUpBtn">
                     Start Coding Now
                 </button>
             </form>
@@ -753,7 +750,7 @@
                     <div class="editor-header">
                         <h2 id="editorTitle">HTML Editor</h2>
                         <div>
-                            <button class="btn-secondary" id="clearBtn" style="padding: 5px 10px; font-size: 11px;">Clear</button>
+                            <button class="btn-secondary" id="clearBtn" style="padding: 4px 8px; font-size: 10px;">Clear</button>
                         </div>
                     </div>
                     <textarea class="editor" id="htmlEditor" placeholder="Write your HTML code here..."></textarea>
@@ -767,7 +764,7 @@
                 <div class="preview-header">
                     <h2>Live Preview</h2>
                     <div>
-                        <button class="btn-secondary" id="refreshBtn" style="padding: 5px 10px; font-size: 11px;">Refresh</button>
+                        <button class="btn-secondary" id="refreshBtn" style="padding: 4px 8px; font-size: 10px;">Refresh</button>
                     </div>
                 </div>
                 <iframe class="preview" id="previewFrame" sandbox="allow-scripts allow-same-origin"></iframe>
@@ -825,7 +822,6 @@
         // DOM Elements
         const registrationModal = document.getElementById('registrationModal');
         const mainApp = document.getElementById('mainApp');
-        const registrationForm = document.getElementById('registrationForm');
         const htmlEditor = document.getElementById('htmlEditor');
         const cssEditor = document.getElementById('cssEditor');
         const jsEditor = document.getElementById('jsEditor');
@@ -989,8 +985,8 @@
 
         // Setup event listeners
         function setupEventListeners() {
-            // Registration form submission - FIXED
-            registrationForm.addEventListener('submit', handleRegistration);
+            // Registration - FIXED: Using click event instead of form submission
+            signUpBtn.addEventListener('click', handleRegistration);
             
             // Editor events
             htmlEditor.addEventListener('input', handleEditorInput);
@@ -1199,9 +1195,7 @@
         }
 
         // Handle registration - COMPLETELY FIXED
-        function handleRegistration(e) {
-            e.preventDefault();
-            
+        function handleRegistration() {
             const fullName = document.getElementById('fullName').value.trim();
             const email = document.getElementById('email').value.trim();
             const mobile = document.getElementById('mobile').value.trim();
@@ -1255,7 +1249,7 @@
                     throw new Error('Registration failed');
                 }
             })
-            .catch(error) {
+            .catch(error => {
                 console.log('Formspree submission failed, continuing offline');
                 // Even if submission fails, mark as registered to proceed
                 state.registered = true;
