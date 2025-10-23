@@ -680,23 +680,21 @@
                 <h2>Pesific HTML Runner</h2>
                 <p>Create, edit and preview HTML/CSS/JS code</p>
             </div>
-            <form id="registrationForm">
-                <div class="form-group">
-                    <label for="fullName">Full Name *</label>
-                    <input type="text" id="fullName" name="name" class="form-control" required placeholder="Enter your full name">
-                </div>
-                <div class="form-group">
-                    <label for="email">Email Address *</label>
-                    <input type="email" id="email" name="email" class="form-control" required placeholder="Enter your email">
-                </div>
-                <div class="form-group">
-                    <label for="mobile">Mobile Number *</label>
-                    <input type="tel" id="mobile" name="mobile" class="form-control" required placeholder="Enter your mobile number">
-                </div>
-                <button type="button" class="btn-register" id="signUpBtn">
-                    Start Coding Now
-                </button>
-            </form>
+            <div class="form-group">
+                <label for="fullName">Full Name *</label>
+                <input type="text" id="fullName" class="form-control" required placeholder="Enter your full name">
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address *</label>
+                <input type="email" id="email" class="form-control" required placeholder="Enter your email">
+            </div>
+            <div class="form-group">
+                <label for="mobile">Mobile Number *</label>
+                <input type="tel" id="mobile" class="form-control" required placeholder="Enter your mobile number">
+            </div>
+            <button class="btn-register" id="signUpBtn">
+                Start Coding Now
+            </button>
         </div>
     </div>
 
@@ -852,21 +850,39 @@
 
         // Initialize the app
         function init() {
+            console.log("App initialized");
             loadState();
             
             // Check if user is registered
             if (state.registered) {
+                console.log("User is registered, showing main app");
                 registrationModal.style.display = 'none';
                 mainApp.style.display = 'block';
                 initializeApp();
             } else {
+                console.log("User not registered, showing registration");
                 registrationModal.style.display = 'flex';
                 mainApp.style.display = 'none';
+            }
+
+            // Setup registration button event listener immediately
+            setupRegistrationButton();
+        }
+
+        // Setup registration button
+        function setupRegistrationButton() {
+            console.log("Setting up registration button");
+            if (signUpBtn) {
+                signUpBtn.addEventListener('click', handleRegistration);
+                console.log("Registration button event listener added");
+            } else {
+                console.error("Registration button not found!");
             }
         }
 
         // Initialize the main app after registration
         function initializeApp() {
+            console.log("Initializing main app");
             setupSymbolBar();
             setupEventListeners();
             setupOfflineDetection();
@@ -985,8 +1001,7 @@
 
         // Setup event listeners
         function setupEventListeners() {
-            // Registration - FIXED: Using click event instead of form submission
-            signUpBtn.addEventListener('click', handleRegistration);
+            console.log("Setting up event listeners");
             
             // Editor events
             htmlEditor.addEventListener('input', handleEditorInput);
@@ -1196,6 +1211,8 @@
 
         // Handle registration - COMPLETELY FIXED
         function handleRegistration() {
+            console.log("Registration button clicked!");
+            
             const fullName = document.getElementById('fullName').value.trim();
             const email = document.getElementById('email').value.trim();
             const mobile = document.getElementById('mobile').value.trim();
@@ -1215,6 +1232,8 @@
                 return;
             }
             
+            console.log("Form validation passed");
+            
             // Show loading state
             const originalText = signUpBtn.innerHTML;
             signUpBtn.innerHTML = 'Registering...';
@@ -1228,6 +1247,8 @@
             formData.append('_subject', 'New Registration - Pesific HTML Runner');
             formData.append('_format', 'plain');
             
+            console.log("Sending data to Formspree");
+            
             // Send to Formspree
             fetch('https://formspree.io/f/myznnpba', {
                 method: 'POST',
@@ -1237,6 +1258,7 @@
                 }
             })
             .then(response => {
+                console.log("Formspree response received");
                 if (response.ok) {
                     // Success - mark as registered and show main app
                     state.registered = true;
