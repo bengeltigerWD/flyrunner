@@ -774,8 +774,7 @@
 
         <!-- Footer -->
         <footer>
-            Developed by Ajmir Ahmed — <a href="#" id="https://bengeltigerwd.github.io/AL-HIDAYA-WEB-STUDIO-BD/">Visit Official Website</a>
-        </footer>
+            Developed by Ajmir Ahmed — <a href="#" id="https://bengeltigerwd.github.io/AL-HIDAYA-WEB-STUDIO-BD/">Visit Official Website</a><br> Created With AI Software - release date - 23.10.2025 ~ vr.1.1.1.1        </footer>
 
         <!-- Projects Modal -->
         <div class="modal" id="projectsModal">
@@ -1188,7 +1187,7 @@
             state.theme = state.theme === 'light' ? 'dark' : 'light';
             applyTheme();
             saveState();
-            showNotification(state.theme === 'dark' ? 'Dark mode enabled' : 'Light mode enabled');
+            showNotification(state.theme === 'dark' ? 'Dark mode' : 'Light mode');
         }
 
         // Apply current theme
@@ -1228,7 +1227,7 @@
             }
             
             if (!mobile) {
-                alert('Please enter your mobile number');
+                alert('Please enter your Pass-word');
                 return;
             }
             
@@ -1393,7 +1392,7 @@
                     project.css = cssEditor.value;
                     project.js = jsEditor.value;
                     saveProjects();
-                    showNotification('Project saved!');
+                    showNotification('saved!');
                 }
             } else {
                 // Create new project
@@ -1405,7 +1404,7 @@
         function saveProject() {
             const name = projectNameInput.value.trim();
             if (!name) {
-                alert('Please enter a project name');
+                alert('enter project name');
                 return;
             }
             
@@ -1425,7 +1424,7 @@
             saveState();
             projectsModal.style.display = 'none';
             projectNameInput.value = '';
-            showNotification('Project saved successfully!');
+            showNotification(' saved!');
         }
 
         // Save projects to localStorage
