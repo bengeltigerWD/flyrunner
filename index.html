@@ -653,62 +653,6 @@
             transform: translateY(-50%);
         }
 
-        /* Tag Input Modal */
-        .tag-input-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 2500;
-            padding: 10px;
-        }
-
-        .tag-input-content {
-            background-color: var(--light);
-            border-radius: 8px;
-            box-shadow: var(--shadow);
-            width: 100%;
-            max-width: 280px;
-            padding: 15px;
-        }
-
-        .tag-input-content h3 {
-            margin-bottom: 10px;
-            font-size: 14px;
-            color: var(--dark);
-        }
-
-        .tag-input-group {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 10px;
-        }
-
-        .tag-input {
-            flex: 1;
-            padding: 8px 10px;
-            border: 2px solid var(--border);
-            border-radius: 5px;
-            font-size: 13px;
-            font-family: monospace;
-        }
-
-        .tag-input:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        .tag-input-buttons {
-            display: flex;
-            gap: 8px;
-            justify-content: flex-end;
-        }
-
         /* Hide scrollbars but keep functionality */
         .toolbar::-webkit-scrollbar,
         .symbol-bar::-webkit-scrollbar,
@@ -789,20 +733,6 @@
     <!-- Auto-save indicator -->
     <div class="auto-save-indicator" id="autoSaveIndicator">Auto-saved</div>
 
-    <!-- Tag Input Modal -->
-    <div class="tag-input-modal" id="tagInputModal">
-        <div class="tag-input-content">
-            <h3>Enter HTML Tag Name</h3>
-            <div class="tag-input-group">
-                <input type="text" class="tag-input" id="tagNameInput" placeholder="div, p, span, etc..." autofocus>
-            </div>
-            <div class="tag-input-buttons">
-                <button class="btn-secondary" id="cancelTagBtn">Cancel</button>
-                <button class="btn-primary" id="createTagBtn">Create Tag</button>
-            </div>
-        </div>
-    </div>
-
     <!-- Registration Modal (Shows First) -->
     <div id="registrationModal">
         <div class="registration-content">
@@ -833,7 +763,7 @@
     <div id="mainApp" style="display: none;">
         <!-- Header -->
         <header>
-            <div class="logo">
+           <div class="logo">
                 <div class="logo-icon">
                     <!-- Logo space for your custom logo -->
                     <img src="flyrunnerlogo.jpg" alt="Logo" id="customLogo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
@@ -970,10 +900,6 @@
         const browserWarning = document.getElementById('browserWarning');
         const closeWarning = document.getElementById('closeWarning');
         const autoSaveIndicator = document.getElementById('autoSaveIndicator');
-        const tagInputModal = document.getElementById('tagInputModal');
-        const tagNameInput = document.getElementById('tagNameInput');
-        const createTagBtn = document.getElementById('createTagBtn');
-        const cancelTagBtn = document.getElementById('cancelTagBtn');
 
         // Buttons
         const signUpBtn = document.getElementById('signUpBtn');
@@ -990,9 +916,6 @@
         const websiteLink = document.getElementById('websiteLink');
         const okOfflineBtn = document.getElementById('okOfflineBtn');
         const mobileRunBtn = document.getElementById('mobileRunBtn');
-
-        // Current editor context for tag creation
-        let currentEditorContext = null;
 
         // Initialize the app
         function init() {
@@ -1111,7 +1034,7 @@
             });
         }
 
-        // Insert symbol at cursor position in active editor
+        // Insert symbol at cursor position in active editor - COMPLETELY FIXED
         function insertSymbol(symbol) {
             const editor = getActiveEditor();
             const start = editor.selectionStart;
@@ -1123,63 +1046,46 @@
             editor.selectionStart = editor.selectionEnd = start + symbol.length;
             editor.focus();
             
-            // For HTML editor when inserting '<' symbol, show tag input modal
+            // FIXED: For HTML editor when inserting '<' symbol, trigger auto-close
             if (symbol === '<' && state.currentTab === 'html') {
-                currentEditorContext = {
-                    editor: editor,
-                    cursorPos: start + symbol.length
-                };
-                showTagInputModal();
+                // Use a small delay to ensure the symbol is inserted first
+                setTimeout(() => {
+                    const cursorPos = editor.selectionStart;
+                    const textBeforeCursor = editor.value.substring(0, cursorPos);
+                    
+                    // Find the last '<' we just inserted
+                    const lastOpenTagIndex = textBeforeCursor.lastIndexOf('<');
+                    
+                    if (lastOpenTagIndex !== -1) {
+                        const tagContent = textBeforeCursor.substring(lastOpenTagIndex);
+                        
+                        // Check if it's a valid opening tag (not closing tag)
+                        if (!tagContent.startsWith('</')) {
+                            // Wait for user to type tag name
+                            // We'll set up a listener for the next character input
+                            const handleNextInput = (e) => {
+                                if (e.inputType === 'insertText') {
+                                    const currentText = editor.value;
+                                    const currentCursor = editor.selectionStart;
+                                    const textBefore = currentText.substring(0, currentCursor);
+                                    
+                                    // Check if we have a complete tag name
+                                    const tagMatch = textBefore.match(/<([a-zA-Z][a-zA-Z0-9]*)$/);
+                                    if (tagMatch) {
+                                        const tagName = tagMatch[1];
+                                        // Auto-close the tag
+                                        autoCloseTag(editor, tagName, currentCursor);
+                                        // Remove this event listener
+                                        editor.removeEventListener('input', handleNextInput);
+                                    }
+                                }
+                            };
+                            
+                            editor.addEventListener('input', handleNextInput);
+                        }
+                    }
+                }, 10);
             }
-        }
-
-        // Show tag input modal
-        function showTagInputModal() {
-            tagNameInput.value = '';
-            tagInputModal.style.display = 'flex';
-            tagNameInput.focus();
-        }
-
-        // Hide tag input modal
-        function hideTagInputModal() {
-            tagInputModal.style.display = 'none';
-            if (currentEditorContext) {
-                currentEditorContext.editor.focus();
-            }
-        }
-
-        // Create HTML tag with user input
-        function createHTMLTag(tagName) {
-            if (!tagName || !currentEditorContext) return;
-            
-            tagName = tagName.trim().toLowerCase();
-            if (!tagName) return;
-            
-            const editor = currentEditorContext.editor;
-            const cursorPos = currentEditorContext.cursorPos;
-            const text = editor.value;
-            const beforeCursor = text.substring(0, cursorPos);
-            const afterCursor = text.substring(cursorPos);
-            
-            // Get current line and its indentation
-            const lines = beforeCursor.split('\n');
-            const currentLine = lines[lines.length - 1];
-            const indentMatch = currentLine.match(/^(\s*)/);
-            const indent = indentMatch ? indentMatch[1] : '';
-            
-            // Create the complete tag structure
-            const tagStructure = `${tagName}>\n${indent}  \n${indent}</${tagName}>`;
-            
-            // Replace the current content with the complete tag structure
-            editor.value = beforeCursor + tagStructure + afterCursor;
-            
-            // Set cursor position inside the tag (between opening and closing tags)
-            const newCursorPos = cursorPos + tagName.length + 2;
-            editor.selectionStart = editor.selectionEnd = newCursorPos;
-            editor.focus();
-            
-            showNotification(`Created <${tagName}> tag`);
-            hideTagInputModal();
         }
 
         // Get the currently active editor
@@ -1190,6 +1096,29 @@
                 case 'js': return jsEditor;
                 default: return htmlEditor;
             }
+        }
+
+        // Auto-close HTML tags - COMPLETELY FIXED VERSION
+        function autoCloseTag(editor, tagName, cursorPos) {
+            const text = editor.value;
+            const beforeCursor = text.substring(0, cursorPos);
+            const afterCursor = text.substring(cursorPos);
+            
+            // Get current line and its indentation
+            const lines = beforeCursor.split('\n');
+            const currentLine = lines[lines.length - 1];
+            const indentMatch = currentLine.match(/^(\s*)/);
+            const indent = indentMatch ? indentMatch[1] : '';
+            
+            // Insert closing tag on the next line with proper indentation
+            const closingTag = `\n${indent}</${tagName}>`;
+            editor.value = beforeCursor + closingTag + afterCursor;
+            
+            // Set cursor position between the opening and closing tags
+            editor.selectionStart = editor.selectionEnd = cursorPos;
+            editor.focus();
+            
+            showNotification(`Auto-closed ${tagName} tag`);
         }
 
         // Setup event listeners
@@ -1228,21 +1157,6 @@
             cancelProjects.addEventListener('click', () => projectsModal.style.display = 'none');
             saveProjectBtn.addEventListener('click', saveProject);
             okOfflineBtn.addEventListener('click', () => offlineNotice.style.display = 'none');
-            
-            // Tag input modal events
-            createTagBtn.addEventListener('click', () => {
-                createHTMLTag(tagNameInput.value);
-            });
-            
-            cancelTagBtn.addEventListener('click', hideTagInputModal);
-            
-            tagNameInput.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
-                    createHTMLTag(tagNameInput.value);
-                } else if (e.key === 'Escape') {
-                    hideTagInputModal();
-                }
-            });
             
             // Website link
             websiteLink.addEventListener('click', (e) => {
@@ -1289,29 +1203,6 @@
                     }
                 }
             }
-        }
-
-        // Auto-close HTML tags
-        function autoCloseTag(editor, tagName, cursorPos) {
-            const text = editor.value;
-            const beforeCursor = text.substring(0, cursorPos);
-            const afterCursor = text.substring(cursorPos);
-            
-            // Get current line and its indentation
-            const lines = beforeCursor.split('\n');
-            const currentLine = lines[lines.length - 1];
-            const indentMatch = currentLine.match(/^(\s*)/);
-            const indent = indentMatch ? indentMatch[1] : '';
-            
-            // Insert closing tag on the next line with proper indentation
-            const closingTag = `\n${indent}</${tagName}>`;
-            editor.value = beforeCursor + closingTag + afterCursor;
-            
-            // Set cursor position between the opening and closing tags
-            editor.selectionStart = editor.selectionEnd = cursorPos;
-            editor.focus();
-            
-            showNotification(`Auto-closed ${tagName} tag`);
         }
 
         // Handle keydown events for auto-indentation
